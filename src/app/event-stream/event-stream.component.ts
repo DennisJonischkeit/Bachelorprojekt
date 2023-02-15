@@ -5,6 +5,7 @@ import { EventMqttService } from '../services/event.mqtt.service'
 import { IMqttMessage } from "ngx-mqtt";
 import {WebserviceService} from '../services/webservice.service';
 import { SpeedService } from '../services/speed.service';
+import { _isTestEnvironment } from '@angular/cdk/platform';
 
 @Component({
     selector: 'event-stream',
@@ -39,12 +40,14 @@ export class EventStreamComponent implements OnInit {
     private subscribeToTopic() {
         this.subscription = this.eventMqtt.topic(this.deviceId)
             .subscribe((data: IMqttMessage) => {
-                let item = JSON.parse(new TextDecoder("utf-8").decode(data.payload));
+                let item = JSON.parse(new TextDecoder("utf-8").decode(data.payload)); //json object with job information
                 console.log(item["speed"]);
                 //this.ws.jobs.push(item);
                 //this.events.push(item);
                 
                 this.speedService.addSpeedValue(+item['speed']);
+
+                this.speedService.addjobData(item);
                 
             });
     }

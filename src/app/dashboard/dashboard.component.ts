@@ -35,10 +35,14 @@ export class DashboardComponent implements OnInit {
           } as SeriesOption,
         ],
       };
-
-
-
-
     });
+
+   // displays a list of json objects of the incomming jobs
+   this.speedService.jobData.subscribe((jobData: JSON[]) => {
+
+      console.log(jobData);
+   });
+
+
   }
 }
