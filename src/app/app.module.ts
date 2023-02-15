@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,7 @@ import { EventStreamComponent } from './event-stream/event-stream.component';
 import {EventMqttService} from './services/event.mqtt.service';
 import {WebserviceService} from './services/webservice.service';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { MqttTopicPanelComponent } from './mqtt-topic-panel/mqtt-topic-panel.component';
 
 
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -28,10 +30,12 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AppComponent,
     DashboardComponent,
     EventStreamComponent,
+    MqttTopicPanelComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     BrowserAnimationsModule,
     NbThemeModule.forRoot({ name: 'default' }),
     NbLayoutModule,
