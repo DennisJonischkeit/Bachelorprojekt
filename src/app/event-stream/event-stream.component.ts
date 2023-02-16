@@ -3,16 +3,17 @@ import { Subscription } from 'rxjs';
 import { EventMqttService } from '../services/event.mqtt.service'
 import { IMqttMessage } from "ngx-mqtt";
 import {WebserviceService} from '../services/webservice.service';
-import { SpeedService } from '../services/speed.service';
+import { JobDataService } from '../services/shared-jobdata.service';
 import { _isTestEnvironment } from '@angular/cdk/platform';
-import { MqttTopicService } from "../services/mqtt-topic.service";
+import { MqttTopicService } from '../services/mqtt-topic.service';
+
 
 @Component({
     selector: 'event-stream',
     templateUrl: './event-stream.component.html',
     styleUrls: ['./event-stream.component.scss'],
 })
-export class EventStreamComponent implements OnInit {
+export class EventStreamComponent {
     
     events: any[];
     private deviceId: string;
@@ -23,24 +24,21 @@ export class EventStreamComponent implements OnInit {
     constructor(
         private readonly eventMqtt: EventMqttService,
         private ws: WebserviceService,
-        private speedService: SpeedService,
-        private MqttTopicService: MqttTopicService,
+        private JobDataService: JobDataService,
+        private mqttTopicService: MqttTopicService,
     ){
-
-        this.MqttTopicService.selectedtopic$.subscribe(selectedtopic => {
-            this.selectedtopic=selectedtopic;
-            //console.log(this.selectedtopic);
-            //this.ngOnDestroy();
-            //this.ngOnInit();
-          })
 
     }
 
-    ngOnInit() {
+    startstream() {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
+        this.eventMqtt.endpoint_static = this.mqttTopicService.topic;
         this.subscribeToTopic();
     }
 
-    ngOnDestroy(): void {
+    endstream(): void {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
@@ -48,20 +46,21 @@ export class EventStreamComponent implements OnInit {
 
 
     private subscribeToTopic() {
+
+        
         this.subscription = this.eventMqtt.topic(this.deviceId)
             .subscribe((data: IMqttMessage) => {
                 let item = JSON.parse(new TextDecoder("utf-8").decode(data.payload)); //json object with job information
-                console.log(item["speed"]);
+                
                 //this.ws.jobs.push(item);
                 //this.events.push(item);
                 
-                //console.log(item["speed"]);
-                this.speedService.addSpeedValue(+item['speed']);
-
-                this.speedService.addjobData(item);
+                this.JobDataService.addjobData(item);
+                console.log("Es kommen daten an...");
+                // jobdata an Datenbank schicken / text Datei 
                 
             });
-    }
-
+    
 }
 
+}

@@ -1,6 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { EChartsOption } from 'echarts';
-import { SpeedService } from '../services/speed.service';
+import { JobDataService } from '../services/shared-jobdata.service';
 import { SeriesOption } from 'echarts';
 
 @Component({
@@ -10,35 +10,14 @@ import { SeriesOption } from 'echarts';
 })
 export class DashboardComponent implements OnInit {
 
-  carspeedchartOption: EChartsOption = {};
-
-  constructor(private speedService: SpeedService) {
+  constructor(private JobDataService: JobDataService) {
     
   }
 
   ngOnInit(): void {
-    this.speedService.speedValues.subscribe((speedValues: number[]) => {
-      console.log(speedValues);
-
-      this.carspeedchartOption = {
-        xAxis: {
-          type: 'category',
-        },
-        yAxis: {
-          type: 'value',
-        },
-        series: [
-          {
-            data: speedValues,
-            type: 'line',
-            smooth: true
-          } as SeriesOption,
-        ],
-      };
-    });
 
    // displays a list of json objects of the incomming jobs
-   this.speedService.jobData.subscribe((jobData: JSON[]) => {
+   this.JobDataService.jobData.subscribe((jobData: JSON[]) => {
 
       console.log(jobData);
    });

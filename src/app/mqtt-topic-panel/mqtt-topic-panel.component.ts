@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { MqttTopicService } from '../services/mqtt-topic.service';
 
 @Component({
@@ -6,7 +6,7 @@ import { MqttTopicService } from '../services/mqtt-topic.service';
   templateUrl: './mqtt-topic-panel.component.html',
   styleUrls: ['./mqtt-topic-panel.component.scss']
 })
-export class MqttTopicPanelComponent {
+export class MqttTopicPanelComponent implements OnInit {
   
   topic: string="";
 
@@ -14,6 +14,10 @@ export class MqttTopicPanelComponent {
     
     updateTopic(){
       this.mqttTopicService.setTopic(this.topic);
+    }
+
+    ngOnInit(){
+      this.updateTopic()
     }
   }
 

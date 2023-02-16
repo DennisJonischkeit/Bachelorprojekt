@@ -7,14 +7,18 @@ import { Observable } from "rxjs";
 export class EventMqttService {
 
   private endpoint: string;
-  private endpoint_static: string;
+  endpoint_static: string;
   
+
   
   constructor(
     private _mqttService: MqttService,
+    
+
   ) {
     this.endpoint = 'events';
     this.endpoint_static = "home/tutorial/PubSubDemo111";
+   
 
   }
 
@@ -23,4 +27,5 @@ export class EventMqttService {
     console.log(topicName);   
     return this._mqttService.observe(topicName);
   }
+ 
 }
