@@ -1,11 +1,11 @@
 import { Component, OnInit} from '@angular/core';
-//import { EventDataModel } from 'app/models/event.model';
 import { Subscription } from 'rxjs';
 import { EventMqttService } from '../services/event.mqtt.service'
 import { IMqttMessage } from "ngx-mqtt";
 import {WebserviceService} from '../services/webservice.service';
 import { SpeedService } from '../services/speed.service';
 import { _isTestEnvironment } from '@angular/cdk/platform';
+import { MqttTopicService } from "../services/mqtt-topic.service";
 
 @Component({
     selector: 'event-stream',
@@ -17,13 +17,23 @@ export class EventStreamComponent implements OnInit {
     events: any[];
     private deviceId: string;
     subscription: Subscription;
+    private selectedtopic: string;
 
 
     constructor(
         private readonly eventMqtt: EventMqttService,
         private ws: WebserviceService,
         private speedService: SpeedService,
+        private MqttTopicService: MqttTopicService,
     ){
+
+        this.MqttTopicService.selectedtopic$.subscribe(selectedtopic => {
+            this.selectedtopic=selectedtopic;
+            //console.log(this.selectedtopic);
+            //this.ngOnDestroy();
+            //this.ngOnInit();
+          })
+
     }
 
     ngOnInit() {
@@ -45,6 +55,7 @@ export class EventStreamComponent implements OnInit {
                 //this.ws.jobs.push(item);
                 //this.events.push(item);
                 
+                //console.log(item["speed"]);
                 this.speedService.addSpeedValue(+item['speed']);
 
                 this.speedService.addjobData(item);

@@ -10,5 +10,6 @@ export class MqttTopicService {
 
   setTopic(selectedtopic: string) {
     this.topicSource.next(selectedtopic);
+    console.log("Topic changed to: ",selectedtopic);
   }
 }

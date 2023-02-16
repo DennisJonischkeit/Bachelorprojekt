@@ -1,3 +1,8 @@
-.carspeed-chart {
-  height: 400px;
+
+.card-container{
+  display:inline-flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px
 }
+
