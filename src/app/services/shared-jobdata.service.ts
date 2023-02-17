@@ -18,5 +18,16 @@ getValue(key: string, job: JSON){
     return (job as {[key: string]: any})[key];
 }
 
-
+getListOf(key: string, jobdata: any[]): any[] {
+    const result: any[] = [];
+  
+    for (const job of jobdata) {
+      if (job[key]) {
+        result.push(job[key]);
+      }
+    }
+  
+    return result;
+  }
+  
 }

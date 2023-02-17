@@ -11,7 +11,7 @@ import { SeriesOption } from 'echarts';
 export class DashboardComponent implements OnInit {
 
   cardData: {header: string, content: string}[] = []
-
+  avediskreadchartOption: EChartsOption = {};
 
   constructor(private JobDataService: JobDataService) {
     
@@ -19,7 +19,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const headers = ['user', 'jobname', 'jobid', 'ntasks', 'allocnodes', 'avecpu', 'mincpu', 'mincpunode', 'mincputask', 'avecpufreq', 'avediskread', 'avediskwrite', 'maxdiskread', 'maxdiskreadnode', 'maxdiskreadtask', 'maxdiskwrite', 'maxdiskwritenode', 'maxdiskwritetask', 'avevmsize', 'maxvmsize', 'maxvmsizenode', 'maxvmsizetask', 'consumedenergy', 'avepages', 'maxpages']
+    //headers of the incomming Json object (must be adjusted if inpout changes)
+    const headers = ['user', 'jobname', 'jobid', 'ntasks', 'allocnodes','avecpu', 'mincpu', 'mincpunode', 'mincputask', 'avecpufreq', 'avediskread', 'avediskwrite', 'maxdiskread', 'maxdiskreadnode', 'maxdiskreadtask', 'maxdiskwrite', 'maxdiskwritenode', 'maxdiskwritetask', 'avevmsize', 'maxvmsize', 'maxvmsizenode', 'maxvmsizetask', 'consumedenergy', 'avepages', 'maxpages']
 
 
    // displays a list of json objects of the incomming jobs
@@ -34,9 +35,33 @@ export class DashboardComponent implements OnInit {
       }
       
       this.cardData = cardData;
-      console.log(currentjobdata);
-   });
+      console.log(jobData);
 
 
-  }
+      // option beginning
+      this.avediskreadchartOption = {
+        xAxis: {
+          type: 'category',
+        },
+        yAxis: {
+          type: 'value',
+        },
+        series: [
+          {
+            data: this.JobDataService.getListOf("avediskread",jobData),
+            type: 'line',
+            smooth: true
+          } as SeriesOption,
+        ],
+      };
+
+      // option end
+
+
+    });
+
 }
+}
+
+
+   
