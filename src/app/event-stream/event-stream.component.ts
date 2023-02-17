@@ -57,7 +57,7 @@ export class EventStreamComponent {
                 
                 this.JobDataService.addjobData(item);
                 console.log("Es kommen daten an...");
-                // jobdata an Datenbank schicken / text Datei 
+                // item hier an Datenbank schicken / text Datei 
                 
             });
     

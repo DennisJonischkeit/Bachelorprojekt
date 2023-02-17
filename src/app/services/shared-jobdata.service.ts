@@ -14,5 +14,9 @@ addjobData(job: JSON): void {
     this.jobDataSubject.next([...this.jobDataSubject.value, job]);
 }
 
+getValue(key: string, job: JSON){
+    return (job as {[key: string]: any})[key];
+}
+
 
 }
