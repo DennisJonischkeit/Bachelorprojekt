@@ -4,12 +4,7 @@
   <nb-card class="job-card" *ngFor="let card of cardData">
     <nb-card-header>{{ card.header }}</nb-card-header>
     <nb-card-body class="job-card-body">
-      <div *ngIf="card.header === 'avediskread'">
-        seperat Angezeigt
-      </div>
-      <div *ngIf="card.header !== 'avediskread'">
         {{ card.content }}
-      </div>
     </nb-card-body>
   </nb-card>
 </div>
@@ -17,8 +12,8 @@
 <div class="card-row">
   <div class="card-col">
     <nb-card size="medium">
-      <nb-card-header>avediskread</nb-card-header>
-      <div echarts theme = "dark" [options]="avediskreadchartOption" class="carspeed-chart"></div>
+      <nb-card-header>avediskread / avediskwrite</nb-card-header>
+      <div echarts [options]="avediskread_writechartOption" class="avediskread/wirte-chart"></div>
     </nb-card>
   </div>
 </div>

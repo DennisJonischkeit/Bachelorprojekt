@@ -11,7 +11,7 @@ import { SeriesOption } from 'echarts';
 export class DashboardComponent implements OnInit {
 
   cardData: {header: string, content: string}[] = []
-  avediskreadchartOption: EChartsOption = {};
+  avediskread_writechartOption: EChartsOption = {};
 
   constructor(private JobDataService: JobDataService) {
     
@@ -39,7 +39,64 @@ export class DashboardComponent implements OnInit {
 
 
       // option beginning
-      this.avediskreadchartOption = {
+      this.avediskread_writechartOption = {
+        
+        tooltip:{
+          trigger: "axis",
+          axisPointer:{
+            type: "cross",
+          },
+        },
+
+        legend:{
+          data:["avediskread", "avediskwrite"]
+        },
+
+        toolbox:{
+          feature: {
+            saveAsImage: {}
+          }
+        },
+
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+        },
+        yAxis: {
+          type: 'value',
+          name: "Bytes",
+        },
+        series: [
+          {
+            name: "avediskwrite",
+            data: this.JobDataService.getListOf("avediskwrite", jobData),
+            type: "line",
+            stack: "Total",
+            areaStyle: {},
+            emphasis: {
+              focus:"series"
+            },
+            smooth: true
+          } as SeriesOption,
+
+          {
+            name: "avediskread",
+            data: this.JobDataService.getListOf("avediskread",jobData),
+            type: 'line',
+            stack: "Total",
+            areaStyle: {},
+            emphasis: {
+              focus: "series"
+            },
+            smooth: true
+          } as SeriesOption,
+
+        ],
+      };
+
+      // option end
+
+      /* this.avediskreadchartOption = {
         xAxis: {
           type: 'category',
         },
@@ -48,14 +105,12 @@ export class DashboardComponent implements OnInit {
         },
         series: [
           {
-            data: this.JobDataService.getListOf("avediskread",jobData),
+            data: this.JobDataService.getListOf("avediskread",jobData)
             type: 'line',
             smooth: true
           } as SeriesOption,
         ],
-      };
-
-      // option end
+      };*/
 
 
     });
