@@ -19,8 +19,8 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    //headers of the incomming Json object (must be adjusted if inpout changes)
-    const headers = ['user', 'jobname', 'jobid', 'ntasks', 'allocnodes','avecpu', 'mincpu', 'mincpunode', 'mincputask', 'avecpufreq', 'avediskread', 'avediskwrite', 'maxdiskread', 'maxdiskreadnode', 'maxdiskreadtask', 'maxdiskwrite', 'maxdiskwritenode', 'maxdiskwritetask', 'avevmsize', 'maxvmsize', 'maxvmsizenode', 'maxvmsizetask', 'consumedenergy', 'avepages', 'maxpages']
+    //headers of the incomming Json object that shloud be displayed (must be adjusted if inpout changes)
+    const headers = ['user', 'jobname', 'jobid', "job_id", 'ntasks', 'allocnodes','avecpu', 'mincpu', 'mincpunode', 'mincputask', 'avecpufreq', 'avediskread', 'avediskwrite', 'maxdiskread', 'maxdiskreadnode', 'maxdiskreadtask', 'maxdiskwrite', 'maxdiskwritenode', 'maxdiskwritetask', 'avevmsize', 'maxvmsize', 'maxvmsizenode', 'maxvmsizetask', 'consumedenergy', 'avepages', 'maxpages']
 
 
    // displays a list of json objects of the incomming jobs
@@ -52,11 +52,17 @@ export class DashboardComponent implements OnInit {
           data:["avediskread", "avediskwrite"]
         },
 
-        toolbox:{
+        toolbox: {
           feature: {
             saveAsImage: {}
           }
         },
+
+        // data zoom with range slider
+        dataZoom: [
+          {type: "slider"},
+          {type: "inside"}
+        ],
 
         xAxis: {
           type: 'category',
@@ -71,6 +77,7 @@ export class DashboardComponent implements OnInit {
             name: "avediskwrite",
             data: this.JobDataService.getListOf("avediskwrite", jobData),
             type: "line",
+            color: "",
             stack: "Total",
             areaStyle: {},
             emphasis: {
@@ -83,6 +90,7 @@ export class DashboardComponent implements OnInit {
             name: "avediskread",
             data: this.JobDataService.getListOf("avediskread",jobData),
             type: 'line',
+            color: "",
             stack: "Total",
             areaStyle: {},
             emphasis: {
@@ -93,26 +101,6 @@ export class DashboardComponent implements OnInit {
 
         ],
       };
-
-      // option end
-
-      /* this.avediskreadchartOption = {
-        xAxis: {
-          type: 'category',
-        },
-        yAxis: {
-          type: 'value',
-        },
-        series: [
-          {
-            data: this.JobDataService.getListOf("avediskread",jobData)
-            type: 'line',
-            smooth: true
-          } as SeriesOption,
-        ],
-      };*/
-
-
     });
 
 }

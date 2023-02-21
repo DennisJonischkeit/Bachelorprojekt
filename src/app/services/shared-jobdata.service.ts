@@ -29,5 +29,9 @@ getListOf(key: string, jobdata: any[]): any[] {
   
     return result;
   }
+
+  getlength(): number {
+    return this.jobDataSubject.value.length;
+  }
   
 }
