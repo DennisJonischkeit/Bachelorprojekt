@@ -22,6 +22,12 @@ getListOf(key: string, jobdata: any[]): any[] {
     const result: any[] = [];
   
     for (const job of jobdata) {
+
+      if (key == "avecpufreq"){
+        result.push(job[key].slice(0, job[key].length - 1));
+        continue;
+      }
+
       if (job[key]) {
         result.push(job[key]);
       }

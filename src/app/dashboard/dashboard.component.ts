@@ -12,6 +12,7 @@ export class DashboardComponent implements OnInit {
 
   cardData: {header: string, content: string}[] = []
   avediskread_writechartOption: EChartsOption = {};
+  avecpufreqchartOption: EChartsOption = {};
 
   constructor(private JobDataService: JobDataService) {
     
@@ -38,7 +39,7 @@ export class DashboardComponent implements OnInit {
       console.log(jobData);
 
 
-      // option beginning
+      // option beginning avediskread_writechartOption
       this.avediskread_writechartOption = {
         
         tooltip:{
@@ -101,6 +102,62 @@ export class DashboardComponent implements OnInit {
 
         ],
       };
+
+
+      // option beginning of avecpufreq
+      this.avecpufreqchartOption = {
+
+        tooltip:{
+          trigger: "axis",
+          axisPointer:{
+            type: "cross",
+          },
+        },
+
+        legend:{
+          data:["avecpufreq"]
+        },
+
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+
+        // data zoom with range slider
+        dataZoom: [
+          {type: "slider"},
+          {type: "inside"}
+        ],
+
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+        },
+        yAxis: {
+          type: 'value',
+          name: "kHz",
+        },
+        series: [
+          {
+            name: "avecpufreq",
+            data: this.JobDataService.getListOf("avecpufreq", jobData),
+            type: "line",
+            color: "",
+            stack: "Total",
+            areaStyle: {},
+            emphasis: {
+              focus:"series"
+            },
+            smooth: true
+          } as SeriesOption,
+
+        ],
+      };
+
+
+
+
     });
 
 }

@@ -9,11 +9,15 @@
   </nb-card>
 </div>
 
-<div class="card-row">
-  <div class="card-col">
-    <nb-card>
-      <nb-card-header>avediskread / avediskwrite</nb-card-header>
-      <div echarts [options]="avediskread_writechartOption" class="avediskread/wirte-chart"></div>
-    </nb-card>
-  </div>
-</div>
+
+<nb-card>
+  <nb-card-header>avediskread / avediskwrite</nb-card-header>
+  <div echarts [options]="avediskread_writechartOption" class="avediskread/wirte-chart"></div>
+</nb-card>
+
+
+<nb-card>
+  <nb-card-header>avecpufreq</nb-card-header>
+  <div echarts [options]="avecpufreqchartOption" class="avecpufreq-chart"></div>
+</nb-card>
+
