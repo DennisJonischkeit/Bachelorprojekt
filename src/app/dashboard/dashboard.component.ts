@@ -11,7 +11,7 @@ import { SeriesOption } from 'echarts';
 export class DashboardComponent implements OnInit {
 
   cardData: {header: string, content: string}[] = []
-  avediskread_writechartOption: EChartsOption = {};
+  diskread_writechartOption: EChartsOption = {};
   avecpufreqchartOption: EChartsOption = {};
 
   constructor(private JobDataService: JobDataService) {
@@ -20,37 +20,33 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    //headers of the incomming Json object that shloud be displayed (must be adjusted if inpout changes)
-    const headers = ['user', 'jobname', 'jobid', "job_id", 'ntasks', 'allocnodes','avecpu', 'mincpu', 'mincpunode', 'mincputask', 'avecpufreq', 'avediskread', 'avediskwrite', 'maxdiskread', 'maxdiskreadnode', 'maxdiskreadtask', 'maxdiskwrite', 'maxdiskwritenode', 'maxdiskwritetask', 'avevmsize', 'maxvmsize', 'maxvmsizenode', 'maxvmsizetask', 'consumedenergy', 'avepages', 'maxpages']
-
-
-   // displays a list of json objects of the incomming jobs
+   // prepares the cardData of the incomming jobdata
    this.JobDataService.jobData.subscribe((jobData: JSON[]) => {
 
       let currentjobdata = jobData[jobData.length - 1];
       let cardData = [];
 
-      for (const header of headers){
+      for (const header of this.JobDataService.getkeysOfObject(currentjobdata)){
         let content = this.JobDataService.getValue(header, currentjobdata);
         cardData.push({header, content});
       }
       
       this.cardData = cardData;
-      console.log(jobData);
 
 
       // option beginning avediskread_writechartOption
-      this.avediskread_writechartOption = {
+      this.diskread_writechartOption = {
         
         tooltip:{
           trigger: "axis",
           axisPointer:{
             type: "cross",
           },
+        
         },
 
         legend:{
-          data:["avediskread", "avediskwrite"]
+          data:["maxdiskread","avediskread","maxdiskwrite","avediskwrite"]
         },
 
         toolbox: {
@@ -78,12 +74,7 @@ export class DashboardComponent implements OnInit {
             name: "avediskwrite",
             data: this.JobDataService.getListOf("avediskwrite", jobData),
             type: "line",
-            color: "",
-            stack: "Total",
-            areaStyle: {},
-            emphasis: {
-              focus:"series"
-            },
+            color:"rgb(0,100,0)",
             smooth: true
           } as SeriesOption,
 
@@ -91,12 +82,23 @@ export class DashboardComponent implements OnInit {
             name: "avediskread",
             data: this.JobDataService.getListOf("avediskread",jobData),
             type: 'line',
-            color: "",
-            stack: "Total",
-            areaStyle: {},
-            emphasis: {
-              focus: "series"
-            },
+            color:"rgb(139,0,139)",
+            smooth: true
+          } as SeriesOption,
+
+          {
+            name: "maxdiskwrite",
+            data: this.JobDataService.getListOf("maxdiskwrite",jobData),
+            type: 'line',
+            color:"rgb(0,255,0)",
+            smooth: true
+          } as SeriesOption,
+
+          {
+            name: "maxdiskread",
+            data: this.JobDataService.getListOf("maxdiskread",jobData),
+            type: 'line',
+            color:"rgb(255,0,255)",
             smooth: true
           } as SeriesOption,
 
@@ -144,7 +146,6 @@ export class DashboardComponent implements OnInit {
             data: this.JobDataService.getListOf("avecpufreq", jobData),
             type: "line",
             color: "",
-            stack: "Total",
             areaStyle: {},
             emphasis: {
               focus:"series"

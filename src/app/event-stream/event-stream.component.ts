@@ -52,11 +52,14 @@ export class EventStreamComponent {
             .subscribe((data: IMqttMessage) => {
                 let item = JSON.parse(new TextDecoder("utf-8").decode(data.payload)); //json object with job information
                 
-                //this.ws.jobs.push(item);
-                //this.events.push(item);
+                // timestemp in Object reinlegen
+                const newitem = this.JobDataService.addTimeStamp(item);
                 
-                this.JobDataService.addjobData(item);
+                this.JobDataService.addjobData(newitem);
                 console.log("Es kommen daten an...");
+                
+                
+              
                 // item hier an Datenbank schicken / text Datei 
                 
             });

@@ -36,8 +36,17 @@ getListOf(key: string, jobdata: any[]): any[] {
     return result;
   }
 
-  getlength(): number {
-    return this.jobDataSubject.value.length;
-  }
-  
+getkeysOfObject(obj: {[key:string]: any}): string[]{
+  return Object.keys(obj)
+}
+
+
+addTimeStamp(obj: any): any{
+  const now = new Date();
+  const timestamp = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}T${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+  return {...obj, timestamp};
+}
+
+
+
 }
