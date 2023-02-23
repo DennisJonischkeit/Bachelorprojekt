@@ -1,4 +1,5 @@
 
+
 <div class="card-container-status_job_fields">
 
   <nb-card class="job-card" *ngFor="let card of cardData">
@@ -13,6 +14,11 @@
 <nb-card>
   <nb-card-header>disk-read/write</nb-card-header>
   <div echarts [options]="diskread_writechartOption" class="diskread/write-chart"></div>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>node and task</nb-card-header>
+  <div echarts [options]="node_task_chartOPtion" class="node_task-chart"></div>
 </nb-card>
 
 

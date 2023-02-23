@@ -13,6 +13,7 @@ export class DashboardComponent implements OnInit {
   cardData: {header: string, content: string}[] = []
   diskread_writechartOption: EChartsOption = {};
   avecpufreqchartOption: EChartsOption = {};
+  node_task_chartOPtion: EChartsOption = {}
 
   constructor(private JobDataService: JobDataService) {
     
@@ -33,7 +34,6 @@ export class DashboardComponent implements OnInit {
       
       this.cardData = cardData;
 
-
       // option beginning avediskread_writechartOption
       this.diskread_writechartOption = {
         
@@ -42,15 +42,29 @@ export class DashboardComponent implements OnInit {
           axisPointer:{
             type: "cross",
           },
-        
+          order: "valueDesc",
+
+          /*
+          formatter: (params: any) => {
+            let content = params[0].axisValueLabel + '<br>'; 
+            for (let i = 0; i < params.length; i++) {
+              content += params[i].marker + ' ' + params[i].seriesName + ' ' + params[i].value + '<br>'; 
+            }
+
+            return content;
+          }
+          */
+
+
         },
 
         legend:{
-          data:["maxdiskread","avediskread","maxdiskwrite","avediskwrite"]
+          data:["maxdiskread", "avediskread", "maxdiskwrite","avediskwrite"]
         },
 
         toolbox: {
           feature: {
+            restore: {},
             saveAsImage: {}
           }
         },
@@ -58,14 +72,23 @@ export class DashboardComponent implements OnInit {
         // data zoom with range slider
         dataZoom: [
           {type: "slider"},
-          {type: "inside"}
+          {type: "inside"},
+          {
+            type: "slider",
+            yAxisIndex: 0,
+            filterMode: "filter",
+            orient: "vertical",
+            labelFormatter: "{value} Bytes",
+          }
+
         ],
 
-        xAxis: {
+        xAxis: [{
           type: 'category',
           boundaryGap: false,
           data: this.JobDataService.getListOf("timestamp", jobData),
-        },
+        }]
+      ,
         yAxis: {
           type: 'value',
           name: "Bytes",
@@ -75,7 +98,7 @@ export class DashboardComponent implements OnInit {
             name: "avediskwrite",
             data: this.JobDataService.getListOf("avediskwrite", jobData),
             type: "line",
-            color:"rgb(0,100,0)",
+            color:"rgb(0,255,0)",
             smooth: true
           } as SeriesOption,
 
@@ -83,7 +106,7 @@ export class DashboardComponent implements OnInit {
             name: "avediskread",
             data: this.JobDataService.getListOf("avediskread",jobData),
             type: 'line',
-            color:"rgb(139,0,139)",
+            color:"rgb(255,0,255)",
             smooth: true
           } as SeriesOption,
 
@@ -91,7 +114,7 @@ export class DashboardComponent implements OnInit {
             name: "maxdiskwrite",
             data: this.JobDataService.getListOf("maxdiskwrite",jobData),
             type: 'line',
-            color:"rgb(0,255,0)",
+            color:"rgb(0,100,0)",
             smooth: true
           } as SeriesOption,
 
@@ -99,15 +122,72 @@ export class DashboardComponent implements OnInit {
             name: "maxdiskread",
             data: this.JobDataService.getListOf("maxdiskread",jobData),
             type: 'line',
-            color:"rgb(255,0,255)",
+            color:"rgb(139,0,139)",
             smooth: true
-          } as SeriesOption,
+          } as SeriesOption
 
         ],
       };
 
 
-      // option beginning of avecpufreq
+
+
+
+
+
+
+
+
+
+      // option beginning of node_task_chartOPtion
+
+      this.node_task_chartOPtion = {
+/*
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: this.JobDataService.getListOf("timestamp", jobData),
+        },
+
+        yAxis: {
+          type: "category",
+          data: this.JobDataService.getListOf("maxdiskreadnode",jobData)
+
+        } */
+      
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // option beginning of avecpufreqchartOption
       this.avecpufreqchartOption = {
 
         tooltip:{
