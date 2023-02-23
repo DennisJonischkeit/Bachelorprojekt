@@ -64,6 +64,7 @@ export class DashboardComponent implements OnInit {
         xAxis: {
           type: 'category',
           boundaryGap: false,
+          data: this.JobDataService.getListOf("timestamp", jobData),
         },
         yAxis: {
           type: 'value',
@@ -135,6 +136,7 @@ export class DashboardComponent implements OnInit {
         xAxis: {
           type: 'category',
           boundaryGap: false,
+          data: this.JobDataService.getListOf("timestamp", jobData),
         },
         yAxis: {
           type: 'value',
