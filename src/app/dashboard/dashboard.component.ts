@@ -16,6 +16,9 @@ export class DashboardComponent implements OnInit {
   avecpufreqchartOption: EChartsOption = {};
   vmsizechartOption: EChartsOption = {};
   pageschartOption: EChartsOption = {};
+  residentsetsizechartOption: EChartsOption = {};
+
+
 
   constructor(private JobDataService: JobDataService) {
     
@@ -388,6 +391,92 @@ export class DashboardComponent implements OnInit {
       }
 
 
+  // beginning of rss chart
+
+      this.residentsetsizechartOption = {
+
+        tooltip:{
+          trigger: "axis",
+          axisPointer:{
+            type: "cross",
+          },
+          order: "valueDesc",
+
+          formatter: (params: any) => {
+            
+            let content = params[0].axisValueLabel + '<br>'; 
+
+            const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+           
+            
+            for (let i = 0; i < sortedcontent.length; i++) {
+
+              var extension ="";
+              if(params[i].seriesName == "maxrss"){
+                extension = "<br>on node: "+ this.JobDataService.getValue("maxrssnode",currentjobdata)+"<br>task ID: "+ this.JobDataService.getValue("maxrsstask",currentjobdata);
+              }
+
+              const value = '<strong>' + params[i].value + '</strong>'
+              content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
+            }
+
+            return content;
+          }
+        },
+
+        legend:{
+          data:["maxrss","averss"]
+        },
+
+        toolbox: {
+          feature: {
+            restore: {},
+            saveAsImage: {}
+            
+          }
+        },
+
+        dataZoom: [
+          {type: "slider"},
+          {type: "inside"},
+          {
+            type: "slider",
+            yAxisIndex: 0,
+            filterMode: "filter",
+            orient: "vertical",
+            labelFormatter: "{value}",
+          }
+        ],
+
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: this.JobDataService.getListOf("timestamp", jobData),
+        },
+
+        yAxis: {
+          type: 'value',
+          name: "Einheit einfügen !!",
+        },
+
+        series: [
+          {
+            name: "maxrss",
+            data: this.JobDataService.getListOf("maxrss", jobData),
+            type: "line",
+            color: "rgb(139,69,19)",
+            smooth: true
+          } as SeriesOption,
+
+          {
+            name: "averss",
+            data: this.JobDataService.getListOf("averss",jobData),
+            type: 'line',
+            color: "rgb(210,105,30)",
+            smooth: true
+          } as SeriesOption
+
+        ]
 
 
 
@@ -399,7 +488,7 @@ export class DashboardComponent implements OnInit {
 
 
 
-
+      }
 
 
 
