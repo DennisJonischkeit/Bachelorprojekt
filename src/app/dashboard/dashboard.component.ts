@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit {
   vmsizechartOption: EChartsOption = {};
   pageschartOption: EChartsOption = {};
   residentsetsizechartOption: EChartsOption = {};
+  consumedenergychartOption: EChartsOption = {};
 
 
 
@@ -84,6 +85,7 @@ export class DashboardComponent implements OnInit {
 
         toolbox: {
           feature: {
+            dataView: {},
             restore: {},
             saveAsImage: {}
             
@@ -191,6 +193,7 @@ export class DashboardComponent implements OnInit {
 
         toolbox: {
           feature: {
+            dataView: {},
             restore: {},
             saveAsImage: {}
             
@@ -264,7 +267,9 @@ export class DashboardComponent implements OnInit {
 
         toolbox: {
           feature: {
-            saveAsImage: {}
+            dataView: {},
+            saveAsImage: {},
+            restore: {},
           }
         },
 
@@ -339,6 +344,7 @@ export class DashboardComponent implements OnInit {
 
         toolbox: {
           feature: {
+            dataView: {},
             restore: {},
             saveAsImage: {}
             
@@ -430,6 +436,7 @@ export class DashboardComponent implements OnInit {
 
         toolbox: {
           feature: {
+            dataView: {},
             restore: {},
             saveAsImage: {}
             
@@ -464,7 +471,7 @@ export class DashboardComponent implements OnInit {
             name: "maxrss",
             data: this.JobDataService.getListOf("maxrss", jobData),
             type: "line",
-            color: "rgb(139,69,19)",
+            color: "rgb(69,139,116)",
             smooth: true
           } as SeriesOption,
 
@@ -472,7 +479,7 @@ export class DashboardComponent implements OnInit {
             name: "averss",
             data: this.JobDataService.getListOf("averss",jobData),
             type: 'line',
-            color: "rgb(210,105,30)",
+            color: "rgb(118,238,198)",
             smooth: true
           } as SeriesOption
 
@@ -480,15 +487,83 @@ export class DashboardComponent implements OnInit {
 
 
 
+      }
 
+      // beginning of consumed energy chartoption
 
+      this.consumedenergychartOption = {
 
+        tooltip:{
+          trigger: "axis",
+          axisPointer:{
+            type: "cross",
+          },
 
+        },
 
+        legend:{
+          data:["consumedenergy"]
+        },
+
+        toolbox: {
+          feature: {
+            dataView: {},
+            restore: {},
+            saveAsImage: {}
+            
+          }
+        },
+
+        dataZoom: [
+          {type: "slider"},
+          {type: "inside"},
+        ],
+
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: this.JobDataService.getListOf("timestamp", jobData),
+        },
+
+        yAxis: {
+          type: 'value',
+          name: "joule",
+        },
+
+        series: [
+          {
+            name: "consumedenergy",
+            data: this.JobDataService.getListOf("consumedenergy", jobData),
+            type: "line",
+            color: "rgb(255,69,0)",
+            markPoint: {
+              data: [
+
+                {name: "Maximum", type: "max"},
+                {type: "min"}
+              ],
+              
+               
+            },
+            smooth: true
+          } as SeriesOption
+
+        ]
 
 
 
       }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
