@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
   cardData: {header: string, content: string}[] = []
   diskread_writechartOption: EChartsOption = {};
   avecpufreqchartOption: EChartsOption = {};
-  node_task_chartOPtion: EChartsOption = {}
+  vmsizechartOption: EChartsOption = {};
 
   constructor(private JobDataService: JobDataService) {
     
@@ -147,6 +147,101 @@ export class DashboardComponent implements OnInit {
       };
 
 
+
+      // option beginning vmsizechartOPtion
+
+      this.vmsizechartOption = {
+
+        tooltip:{
+          trigger: "axis",
+          axisPointer:{
+            type: "cross",
+          },
+          order: "valueDesc",
+
+          formatter: (params: any) => {
+            
+            let content = params[0].axisValueLabel + '<br>'; 
+
+            const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+           
+            
+            for (let i = 0; i < sortedcontent.length; i++) {
+
+              var extension ="";
+              if(params[i].seriesName == "maxvmsize"){
+                extension = "<br>on node: "+ this.JobDataService.getValue("maxvmsizenode",currentjobdata)+"<br>task ID: "+ this.JobDataService.getValue("maxvmsizetask",currentjobdata);
+              }
+
+              const value = '<strong>' + params[i].value + '</strong>'
+              content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
+            }
+
+            return content;
+          }
+        },
+
+        legend:{
+          data:["maxvmsize","avevmsize"]
+        },
+
+        toolbox: {
+          feature: {
+            restore: {},
+            saveAsImage: {}
+            
+          }
+        },
+
+        dataZoom: [
+          {type: "slider"},
+          {type: "inside"},
+          {
+            type: "slider",
+            yAxisIndex: 0,
+            filterMode: "filter",
+            orient: "vertical",
+            labelFormatter: "{value} Bytes",
+          }
+        ],
+
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: this.JobDataService.getListOf("timestamp", jobData),
+        },
+
+        yAxis: {
+          type: 'value',
+          name: "Einheit einfügen !!",
+        },
+
+        series: [
+          {
+            name: "maxvmsize",
+            data: this.JobDataService.getListOf("maxvmsize", jobData),
+            type: "bar",
+            color: "rgb(255,140,0)",
+            smooth: true
+          } as SeriesOption,
+
+          {
+            name: "avevmsize",
+            data: this.JobDataService.getListOf("avevmsize",jobData),
+            type: 'bar',
+            color: "rgb(255,215,0)",
+            smooth: true
+          } as SeriesOption
+
+        ]
+
+
+
+
+
+      
+
+      }
 
 
 
