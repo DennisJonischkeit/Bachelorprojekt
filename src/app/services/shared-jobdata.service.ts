@@ -15,7 +15,10 @@ addjobData(job: JSON): void {
 }
 
 getValue(key: string, job: JSON){
-    return (job as {[key: string]: any})[key];
+  const result = (job as {[key: string]: any});
+  if (result[key]){
+    return result[key];
+  }
 }
 
 getListOf(key: string, jobdata: any[]): any[] {

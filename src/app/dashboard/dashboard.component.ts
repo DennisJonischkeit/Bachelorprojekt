@@ -3,6 +3,7 @@ import { EChartsOption } from 'echarts';
 import { JobDataService } from '../services/shared-jobdata.service';
 import { SeriesOption } from 'echarts';
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -44,17 +45,32 @@ export class DashboardComponent implements OnInit {
           },
           order: "valueDesc",
 
-          /*
+          
           formatter: (params: any) => {
+            
             let content = params[0].axisValueLabel + '<br>'; 
-            for (let i = 0; i < params.length; i++) {
-              content += params[i].marker + ' ' + params[i].seriesName + ' ' + params[i].value + '<br>'; 
+
+            const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+           
+            
+            for (let i = 0; i < sortedcontent.length; i++) {
+
+              var extension ="";
+              if(params[i].seriesName == "maxdiskread"){
+                extension = "<br>on node: "+ this.JobDataService.getValue("maxdiskreadnode",currentjobdata)+"<br>task ID: "+ this.JobDataService.getValue("maxdiskreadtask",currentjobdata);
+              }
+
+              if(params[i].seriesName == "maxdiskwrite"){
+                extension = "<br>on node: "+ this.JobDataService.getValue("maxdiskwritenode",currentjobdata)+"<br>task ID: "+ this.JobDataService.getValue("maxdiskwritetask",currentjobdata);
+              }
+
+              const value = '<strong>' + params[i].value + '</strong>'
+              content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
             }
 
             return content;
           }
-          */
-
+          
 
         },
 
@@ -66,6 +82,7 @@ export class DashboardComponent implements OnInit {
           feature: {
             restore: {},
             saveAsImage: {}
+            
           }
         },
 
@@ -128,56 +145,6 @@ export class DashboardComponent implements OnInit {
 
         ],
       };
-
-
-
-
-
-
-
-
-
-
-
-      // option beginning of node_task_chartOPtion
-
-      this.node_task_chartOPtion = {
-/*
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: this.JobDataService.getListOf("timestamp", jobData),
-        },
-
-        yAxis: {
-          type: "category",
-          data: this.JobDataService.getListOf("maxdiskreadnode",jobData)
-
-        } */
-      
-      }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
