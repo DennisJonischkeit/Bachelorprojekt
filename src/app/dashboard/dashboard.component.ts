@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   diskread_writechartOption: EChartsOption = {};
   avecpufreqchartOption: EChartsOption = {};
   vmsizechartOption: EChartsOption = {};
+  pageschartOption: EChartsOption = {};
 
   constructor(private JobDataService: JobDataService) {
     
@@ -201,7 +202,7 @@ export class DashboardComponent implements OnInit {
             yAxisIndex: 0,
             filterMode: "filter",
             orient: "vertical",
-            labelFormatter: "{value} Bytes",
+            labelFormatter: "{value}",
           }
         ],
 
@@ -235,11 +236,6 @@ export class DashboardComponent implements OnInit {
 
         ]
 
-
-
-
-
-      
 
       }
 
@@ -300,6 +296,115 @@ export class DashboardComponent implements OnInit {
         ],
       };
 
+       
+
+      // option beginning of pagesChart
+      this.pageschartOption = {
+
+        tooltip:{
+          trigger: "axis",
+          axisPointer:{
+            type: "cross",
+          },
+          order: "valueDesc",
+
+          formatter: (params: any) => {
+            
+            let content = params[0].axisValueLabel + '<br>'; 
+
+            const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+           
+            
+            for (let i = 0; i < sortedcontent.length; i++) {
+
+              var extension ="";
+              if(params[i].seriesName == "maxpages"){
+                extension = "<br>on node: "+ this.JobDataService.getValue("maxpagesnode",currentjobdata)+"<br>task ID: "+ this.JobDataService.getValue("maxpagestask",currentjobdata);
+              }
+
+              const value = '<strong>' + params[i].value + '</strong>'
+              content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
+            }
+
+            return content;
+          }
+        },
+
+        legend:{
+          data:["maxpages","avepages"]
+        },
+
+        toolbox: {
+          feature: {
+            restore: {},
+            saveAsImage: {}
+            
+          }
+        },
+
+        dataZoom: [
+          {type: "slider"},
+          {type: "inside"},
+          {
+            type: "slider",
+            yAxisIndex: 0,
+            filterMode: "filter",
+            orient: "vertical",
+            labelFormatter: "{value}",
+          }
+        ],
+
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: this.JobDataService.getListOf("timestamp", jobData),
+        },
+
+        yAxis: {
+          type: 'value',
+          name: "Anzahl",
+        },
+
+        series: [
+          {
+            name: "maxpages",
+            data: this.JobDataService.getListOf("maxpages", jobData),
+            type: "line",
+            color: "rgb(139,69,19)",
+            smooth: true
+          } as SeriesOption,
+
+          {
+            name: "avepages",
+            data: this.JobDataService.getListOf("avepages",jobData),
+            type: 'line',
+            color: "rgb(210,105,30)",
+            smooth: true
+          } as SeriesOption
+
+        ]
+
+
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -309,4 +414,4 @@ export class DashboardComponent implements OnInit {
 }
 
 
-   
+ 

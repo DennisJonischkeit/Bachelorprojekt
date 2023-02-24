@@ -11,6 +11,15 @@
 </div>
 
 
+
+<nb-card>
+  <nb-card-header>avecpufreq</nb-card-header>
+  <div echarts [options]="avecpufreqchartOption" class="avecpufreq-chart"></div>
+</nb-card>
+
+
+
+
 <nb-card>
   <nb-card-header>disk-read/write</nb-card-header>
   <div echarts [options]="diskread_writechartOption" class="diskread/write-chart"></div>
@@ -24,11 +33,11 @@
 </nb-card>
 
 
-
-
-
 <nb-card>
-  <nb-card-header>avecpufreq</nb-card-header>
-  <div echarts [options]="avecpufreqchartOption" class="avecpufreq-chart"></div>
+  <nb-card-header>page faults</nb-card-header>
+  <div echarts [options]="pageschartOption" class="pages-chart"></div>
 </nb-card>
+
+
+
 
