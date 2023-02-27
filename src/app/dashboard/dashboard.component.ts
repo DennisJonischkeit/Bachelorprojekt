@@ -101,7 +101,7 @@ export class DashboardComponent implements OnInit {
             yAxisIndex: 0,
             filterMode: "filter",
             orient: "vertical",
-            labelFormatter: "{value} Bytes",
+            labelFormatter: "{value} bytes",
           }
 
         ],
@@ -114,7 +114,7 @@ export class DashboardComponent implements OnInit {
       ,
         yAxis: {
           type: 'value',
-          name: "Bytes",
+          name: "bytes",
         },
         series: [
           {
@@ -208,7 +208,7 @@ export class DashboardComponent implements OnInit {
             yAxisIndex: 0,
             filterMode: "filter",
             orient: "vertical",
-            labelFormatter: "{value}",
+            labelFormatter: "{value} bytes",
           }
         ],
 
@@ -220,7 +220,7 @@ export class DashboardComponent implements OnInit {
 
         yAxis: {
           type: 'value',
-          name: "Bytes",
+          name: "bytes",
         },
 
         series: [
@@ -300,7 +300,7 @@ export class DashboardComponent implements OnInit {
             yAxisIndex: 0,
             filterMode: "filter",
             orient: "vertical",
-            labelFormatter: "{value}",
+            labelFormatter: "{value} seconds",
           }
         ],
 
@@ -457,7 +457,7 @@ export class DashboardComponent implements OnInit {
 
         yAxis: {
           type: 'value',
-          name: "Anzahl",
+          name: "count",
         },
 
         series: [
@@ -537,7 +537,7 @@ export class DashboardComponent implements OnInit {
             yAxisIndex: 0,
             filterMode: "filter",
             orient: "vertical",
-            labelFormatter: "{value}",
+            labelFormatter: "{value} bytes",
           }
         ],
 
@@ -549,7 +549,7 @@ export class DashboardComponent implements OnInit {
 
         yAxis: {
           type: 'value',
-          name: "Bytes",
+          name: "bytes",
         },
 
         series: [
