@@ -31,6 +31,12 @@ getListOf(key: string, jobdata: any[]): any[] {
         continue;
       }
 
+      if((key=="mincpu" || key == "avecpu")){
+        result.push(this.timeToSeconds(job[key]));
+        continue;
+      }
+
+
       if (job[key]) {
         result.push(job[key]);
       }
@@ -43,6 +49,19 @@ getkeysOfObject(obj: {[key:string]: any}): string[]{
   return Object.keys(obj)
 }
 
+timeToSeconds(time: string): number {
+  const regex = /^(\d{2}):(\d{2})\.(\d{3})$/;
+  const match = regex.exec(time);
+  if (!match) {
+    throw new Error(`Invalid time format: ${time}`);
+  }
+  const minutes = parseInt(match[1], 10);
+  const seconds = parseInt(match[2], 10);
+  const milliseconds = parseInt(match[3], 10);
+  return minutes * 60 + seconds + milliseconds / 1000;
+}
+
+
 
 addTimeStamp(obj: any): any{
   const now = new Date();
@@ -50,6 +69,5 @@ addTimeStamp(obj: any): any{
   return {...obj, timestamp};
 }
 
-
-
 }
+

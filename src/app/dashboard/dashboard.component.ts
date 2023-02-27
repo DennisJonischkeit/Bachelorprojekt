@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
   pageschartOption: EChartsOption = {};
   residentsetsizechartOption: EChartsOption = {};
   consumedenergychartOption: EChartsOption = {};
+  cpuchartOption: EChartsOption = {};
 
 
 
@@ -92,7 +93,6 @@ export class DashboardComponent implements OnInit {
           }
         },
 
-        // data zoom with range slider
         dataZoom: [
           {type: "slider"},
           {type: "inside"},
@@ -220,7 +220,7 @@ export class DashboardComponent implements OnInit {
 
         yAxis: {
           type: 'value',
-          name: "Einheit einfügen !!",
+          name: "Bytes",
         },
 
         series: [
@@ -245,10 +245,97 @@ export class DashboardComponent implements OnInit {
 
       }
 
+      // option beginning of cpuchartOption
+
+      this.cpuchartOption = {
+
+        tooltip:{
+          trigger: "axis",
+          axisPointer:{
+            type: "cross",
+          },
+
+          formatter: (params: any) => {
+            
+            let content = params[0].axisValueLabel + '<br>'; 
+
+            const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+           
+            
+            for (let i = 0; i < sortedcontent.length; i++) {
+
+              var extension ="";
+              if(params[i].seriesName == "mincpu"){
+                extension = "<br>on node: "+ this.JobDataService.getValue("mincpunode",currentjobdata)+"<br>task ID: "+ this.JobDataService.getValue("mincputask",currentjobdata);
+              }
+
+              const value = '<strong>' + params[i].value + '</strong>'
+              content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
+            }
+
+            return content;
+          }
 
 
 
+        },
 
+        legend:{
+          data:["avecpu", "mincpu"]
+        },
+
+        toolbox: {
+          feature: {
+            dataView: {},
+            saveAsImage: {},
+            restore: {},
+          }
+        },
+
+        dataZoom: [
+          {type: "slider"},
+          {type: "inside"},
+          {
+            type: "slider",
+            yAxisIndex: 0,
+            filterMode: "filter",
+            orient: "vertical",
+            labelFormatter: "{value}",
+          }
+        ],
+
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: this.JobDataService.getListOf("timestamp", jobData),
+        },
+
+        yAxis: {
+          type: 'value',
+          name: "cpu time in seconds",
+        },
+
+        series: [
+          {
+            name: "avecpu",
+            data: this.JobDataService.getListOf("avecpu", jobData),
+            type: "line",
+            color: "rgb(30,144,255)",
+            smooth: true
+          } as SeriesOption,
+
+          {
+            name: "mincpu",
+            data: this.JobDataService.getListOf("mincpu",jobData),
+            type: 'line',
+            color: "rgb(16,78,139)",
+            smooth: true
+          } as SeriesOption
+
+        ]
+
+
+      }
 
 
       // option beginning of avecpufreqchartOption
@@ -273,7 +360,6 @@ export class DashboardComponent implements OnInit {
           }
         },
 
-        // data zoom with range slider
         dataZoom: [
           {type: "slider"},
           {type: "inside"}
@@ -463,7 +549,7 @@ export class DashboardComponent implements OnInit {
 
         yAxis: {
           type: 'value',
-          name: "Einheit einfügen !!",
+          name: "Bytes",
         },
 
         series: [
