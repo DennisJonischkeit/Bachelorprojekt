@@ -22,9 +22,9 @@ export class EventMqttService {
 
   }
 
-  topic(deviceId: string): Observable<IMqttMessage> {
+  topic(): Observable<IMqttMessage> {
     let topicName = `${this.endpoint_static}`;  
-    console.log(topicName);   
+    console.log("listening...: ",topicName);   
     return this._mqttService.observe(topicName);
   }
  

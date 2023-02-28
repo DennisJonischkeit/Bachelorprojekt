@@ -48,7 +48,7 @@ export class EventStreamComponent {
     private subscribeToTopic() {
 
         
-        this.subscription = this.eventMqtt.topic(this.deviceId)
+        this.subscription = this.eventMqtt.topic()
             .subscribe((data: IMqttMessage) => {
                 let item = JSON.parse(new TextDecoder("utf-8").decode(data.payload)); //json object with job information
                 

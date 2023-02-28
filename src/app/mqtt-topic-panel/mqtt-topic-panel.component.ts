@@ -6,18 +6,18 @@ import { MqttTopicService } from '../services/mqtt-topic.service';
   templateUrl: './mqtt-topic-panel.component.html',
   styleUrls: ['./mqtt-topic-panel.component.scss']
 })
-export class MqttTopicPanelComponent implements OnInit {
+export class MqttTopicPanelComponent {
   
   topic: string="";
 
   constructor(private mqttTopicService: MqttTopicService){}
+
+  // Clustername/Partition/Benutzername/job_id" for a specific single job
+  // Clustername/Partition/Benutzername/# for all jobs of the user
     
     updateTopic(){
       this.mqttTopicService.setTopic(this.topic);
     }
 
-    ngOnInit(){
-      this.updateTopic()
-    }
   }
 

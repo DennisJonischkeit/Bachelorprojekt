@@ -15,6 +15,7 @@ import {EventMqttService} from './services/event.mqtt.service';
 import {WebserviceService} from './services/webservice.service';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { MqttTopicPanelComponent } from './mqtt-topic-panel/mqtt-topic-panel.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -31,6 +32,7 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     DashboardComponent,
     EventStreamComponent,
     MqttTopicPanelComponent,
+    SidebarComponent,
   ],
   imports: [
     BrowserModule,
