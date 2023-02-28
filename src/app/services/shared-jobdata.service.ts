@@ -22,6 +22,7 @@ addjobData(job: JSON): void {
   
   if (!(this.jobIdsSubject.value.includes(this.getValue("jobid", job)))){
     this.jobIdsSubject.next([...this.jobIdsSubject.value, this.getValue("jobid", job)]);
+    console.log(this.getValue("jobid", job));
   }
 
 }

@@ -7,6 +7,7 @@ import { JobDataService } from '../services/shared-jobdata.service';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
+  sidebarData: string[] = [];
 
   constructor(private JobDataService: JobDataService){}
 
@@ -14,7 +15,19 @@ export class SidebarComponent implements OnInit {
 
     this.JobDataService.jobIdData.subscribe((jobIddata: string[]) =>{
 
-      console.log("changed");
+
+      let sidebarData = [];
+
+      for(let i=0; i<jobIddata.length; i++){
+        sidebarData.push(jobIddata[i]);
+
+      }
+
+      this.sidebarData = sidebarData;
+
+
+
+
     });
   }
 }
