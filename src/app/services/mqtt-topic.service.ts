@@ -17,4 +17,8 @@ export class MqttTopicService {
     
   }
 
+  getTopic(): string{
+    return this.topic;
+  }
+
 }

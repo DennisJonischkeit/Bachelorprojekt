@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { MqttTopicService } from './mqtt-topic.service';
 
 @Injectable({
 providedIn: 'root'
@@ -12,8 +13,11 @@ jobData = this.jobDataSubject.asObservable();
 
 
 // list of current job ids
-private jobIdsSubject = new BehaviorSubject<string[]>([]);
+jobIdsSubject = new BehaviorSubject<string[]>([]);
 jobIdData = this.jobIdsSubject.asObservable();
+
+
+constructor(private topic: MqttTopicService){}
 
 
 addjobData(job: JSON): void {
@@ -25,6 +29,8 @@ addjobData(job: JSON): void {
     console.log(this.getValue("jobid", job));
   }
 
+
+
 }
 
 getValue(key: string, job: JSON){
@@ -33,6 +39,40 @@ getValue(key: string, job: JSON){
     return result[key];
   }
 }
+
+
+
+getJobIdByTimestamp(timestamp: string, jobdata: any[]): any{
+
+for (const job of jobdata){
+
+  if (job["timestamp"] == timestamp){
+    return job["jobid"];
+  }
+
+}
+
+}
+
+
+getValueByTimestamp(timestamp: string, key: string, jobdata: any[]): any{
+
+for (const job of jobdata){
+  if(job["timestamp"] == timestamp){
+    return job[key];
+  }
+
+}
+
+
+}
+
+
+
+
+
+
+
 
 getListOf(key: string, jobdata: any[]): any[] {
     const result: any[] = [];
@@ -75,10 +115,9 @@ timeToSeconds(time: string): number {
 }
 
 
-
-addTimeStamp(obj: any): any{
+addTimeStamp(obj: any): any {
   const now = new Date();
-  const timestamp = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}T${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+  const timestamp = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}T${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}.${now.getMilliseconds().toString().padStart(3, '0')}Z`;
   return {...obj, timestamp};
 }
 

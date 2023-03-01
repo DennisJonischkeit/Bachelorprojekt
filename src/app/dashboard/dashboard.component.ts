@@ -57,17 +57,19 @@ export class DashboardComponent implements OnInit {
             let content = params[0].axisValueLabel + '<br>'; 
 
             const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+
+            content += "jobid: "+ this.JobDataService.getJobIdByTimestamp(params[0].axisValueLabel,jobData)+"<br>";
            
             
             for (let i = 0; i < sortedcontent.length; i++) {
 
               var extension ="";
               if(params[i].seriesName == "maxdiskread"){
-                extension = "<br>on node: "+ this.JobDataService.getValue("maxdiskreadnode",currentjobdata)+"<br>task ID: "+ this.JobDataService.getValue("maxdiskreadtask",currentjobdata);
+                extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxdiskreadnode",jobData)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxdiskreadtask",jobData);
               }
 
               if(params[i].seriesName == "maxdiskwrite"){
-                extension = "<br>on node: "+ this.JobDataService.getValue("maxdiskwritenode",currentjobdata)+"<br>task ID: "+ this.JobDataService.getValue("maxdiskwritetask",currentjobdata);
+                extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxdiskwritenode",jobData)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxdiskwritetask",jobData);
               }
 
               const value = '<strong>' + params[i].value + '</strong>'
@@ -260,13 +262,15 @@ export class DashboardComponent implements OnInit {
             let content = params[0].axisValueLabel + '<br>'; 
 
             const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+
+            content += "jobid: "+ this.JobDataService.getJobIdByTimestamp(params[0].axisValueLabel,jobData)+"<br>";
            
             
             for (let i = 0; i < sortedcontent.length; i++) {
 
               var extension ="";
               if(params[i].seriesName == "mincpu"){
-                extension = "<br>on node: "+ this.JobDataService.getValue("mincpunode",currentjobdata)+"<br>task ID: "+ this.JobDataService.getValue("mincputask",currentjobdata);
+                extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"mincpunode",jobData)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"mincputask",jobData);
               }
 
               const value = '<strong>' + params[i].value + '</strong>'
@@ -346,6 +350,27 @@ export class DashboardComponent implements OnInit {
           axisPointer:{
             type: "cross",
           },
+
+          formatter: (params: any) => {
+            
+            let content = params[0].axisValueLabel + '<br>'; 
+
+            const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+           
+            
+            for (let i = 0; i < sortedcontent.length; i++) {
+
+              var extension ="";
+              // passende job id einfügen
+              extension = "jobid: "+ this.JobDataService.getJobIdByTimestamp(params[0].axisValueLabel,jobData);
+
+
+              const value = '<strong>' + params[i].value + '</strong>'
+              content +=  extension +"<br>" +params[i].marker + ' ' + params[i].seriesName + ' ' + value +"<br>";
+            }
+
+            return content;
+          }
         },
 
         legend:{
@@ -365,11 +390,15 @@ export class DashboardComponent implements OnInit {
           {type: "inside"}
         ],
 
+        
         xAxis: {
           type: 'category',
           boundaryGap: false,
           data: this.JobDataService.getListOf("timestamp", jobData),
         },
+        
+    
+
         yAxis: {
           type: 'value',
           name: "kHz",
@@ -584,6 +613,26 @@ export class DashboardComponent implements OnInit {
           axisPointer:{
             type: "cross",
           },
+          formatter: (params: any) => {
+            
+            let content = params[0].axisValueLabel + '<br>'; 
+
+            const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+           
+            
+            for (let i = 0; i < sortedcontent.length; i++) {
+
+              var extension ="";
+              // passende job id einfügen
+              extension = "jobid: "+ this.JobDataService.getJobIdByTimestamp(params[0].axisValueLabel,jobData);
+
+
+              const value = '<strong>' + params[i].value + '</strong>'
+              content +=  extension +"<br>" +params[i].marker + ' ' + params[i].seriesName + ' ' + value +"<br>";
+            }
+
+            return content;
+          }
 
         },
 

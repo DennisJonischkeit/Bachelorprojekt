@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { EventMqttService } from '../services/event.mqtt.service'
 import { IMqttMessage } from "ngx-mqtt";
 import {WebserviceService} from '../services/webservice.service';
@@ -54,6 +54,7 @@ export class EventStreamComponent {
                 
                 // timestemp in Object reinlegen
                 const newitem = this.JobDataService.addTimeStamp(item);
+
                 
                 this.JobDataService.addjobData(newitem);
                 console.log("Es kommen daten an...");
