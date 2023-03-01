@@ -11,6 +11,8 @@ import { SeriesOption } from 'echarts';
 })
 export class DashboardComponent implements OnInit {
 
+  selectedTab = "avecpufreq";
+
   cardData: {header: string, content: string}[] = []
   diskread_writechartOption: EChartsOption = {};
   avecpufreqchartOption: EChartsOption = {};

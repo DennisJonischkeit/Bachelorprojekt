@@ -1,6 +1,16 @@
 
+<div>
+  <button (click)="selectedTab = 'carddata'">carddata</button>
+  <button (click)="selectedTab = 'avecpufreq'">avecpufreq</button>
+  <button (click)="selectedTab = 'cpu'">cpu</button>
+  <button (click)="selectedTab = 'diskread_write'">disk-read/write</button>
+  <button (click)="selectedTab = 'vmsize'">vmsize</button>
+  <button (click)="selectedTab = 'pages'">page faults</button>
+  <button (click)="selectedTab = 'residentsetsize'">resident set size</button>
+  <button (click)="selectedTab = 'consumedenergy'">consumed energy</button>
+</div>
 
-<div class="card-container-status_job_fields">
+<div *ngIf="selectedTab === 'carddata'" class="card-container-status_job_fields">
 
   <nb-card class="job-card" *ngFor="let card of cardData">
     <nb-card-header>{{ card.header }}</nb-card-header>
@@ -11,43 +21,46 @@
 </div>
 
 
-<nb-card>
-  <nb-card-header>avecpufreq</nb-card-header>
+
+<nb-card *ngIf="selectedTab === 'avecpufreq'">
+<nb-card-header>avecpufreq</nb-card-header>
+
   <div echarts [options]="avecpufreqchartOption" class="avecpufreq-chart"></div>
 </nb-card>
 
-<nb-card>
-  <nb-card-header>cpu</nb-card-header>
+<nb-card *ngIf="selectedTab === 'cpu'">
+<nb-card-header>cpu</nb-card-header>
+
   <div echarts [options]="cpuchartOption" class="cpu-chart"></div>
 </nb-card>
 
+<nb-card *ngIf="selectedTab === 'diskread_write'">
+<nb-card-header>disk-read/write</nb-card-header>
 
-
-<nb-card>
-  <nb-card-header>disk-read/write</nb-card-header>
   <div echarts [options]="diskread_writechartOption" class="diskread/write-chart"></div>
 </nb-card>
 
+<nb-card *ngIf="selectedTab === 'vmsize'">
+<nb-card-header>vmsize</nb-card-header>
 
-
-<nb-card>
-  <nb-card-header>vmsize</nb-card-header>
   <div echarts [options]="vmsizechartOption" class="vmsize-chart"></div>
 </nb-card>
 
+<nb-card *ngIf="selectedTab === 'pages'">
+<nb-card-header>page faults</nb-card-header>
 
-<nb-card>
-  <nb-card-header>page faults</nb-card-header>
   <div echarts [options]="pageschartOption" class="pages-chart"></div>
 </nb-card>
 
+<nb-card *ngIf="selectedTab === 'residentsetsize'">
+<nb-card-header>resident set size</nb-card-header>
 
-<nb-card>
-  <nb-card-header>resident set size</nb-card-header>
-  <div echarts [options]="residentsetsizechartOption" class="pages-chart"></div>
+  <div echarts [options]="residentsetsizechartOption" class="residentsetsize-chart"></div>
 </nb-card>
 
-<nb-card>
-  <nb-card-header>consumed energy</nb-card-header>
-  <div echarts [options]="consumedenergychartOption" class="pages-chart"></div>
-</nb-card>
+<nb-card *ngIf="selectedTab === 'consumedenergy'">
+<nb-card-header>consumed energy</nb-card-header>
+
+  <div echarts [options]="consumedenergychartOption" class="consumedenergy-chart"></div>
+</nb-card> 
+
