@@ -22,26 +22,31 @@ export class DashboardComponent implements OnInit {
   consumedenergychartOption: EChartsOption = {};
   cpuchartOption: EChartsOption = {};
 
-
-
+  
   constructor(private JobDataService: JobDataService) {
     
   }
 
+
   ngOnInit(): void {
+
 
    // prepares the cardData of the incomming jobdata
    this.JobDataService.jobData.subscribe((jobData: JSON[]) => {
 
+   
       let currentjobdata = jobData[jobData.length - 1];
       let cardData = [];
 
       for (const header of this.JobDataService.getkeysOfObject(currentjobdata)){
         let content = this.JobDataService.getValue(header, currentjobdata);
         cardData.push({header, content});
+        //this.cardData.push({"jobid": topic, "data":{}})
       }
       
       this.cardData = cardData;
+
+      
 
       // option beginning avediskread_writechartOption
       this.diskread_writechartOption = {

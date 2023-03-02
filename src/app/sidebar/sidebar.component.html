@@ -1,7 +1,11 @@
-<p>running user jobs:</p>
 
-<div class="sidebar_container" *ngFor="let jobid of sidebarData">
-
-    {{jobid}} 
-
-</div>
+<nb-card size="large">
+    <nb-card-header>
+      running user jobs
+    </nb-card-header>
+    <nb-list>
+      <nb-list-item *ngFor="let jobid of sidebarData">
+        <button nbButton (click)="selectedJob"> {{jobid}} </button>
+      </nb-list-item>
+    </nb-list>
+  </nb-card>

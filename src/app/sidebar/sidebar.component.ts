@@ -8,6 +8,7 @@ import { JobDataService } from '../services/shared-jobdata.service';
 })
 export class SidebarComponent implements OnInit {
   sidebarData: string[] = [];
+  selectedJob = "";
 
   constructor(private JobDataService: JobDataService){}
 

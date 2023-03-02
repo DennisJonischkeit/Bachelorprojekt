@@ -69,11 +69,6 @@ for (const job of jobdata){
 
 
 
-
-
-
-
-
 getListOf(key: string, jobdata: any[]): any[] {
     const result: any[] = [];
   

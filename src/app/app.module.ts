@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule, NbLayoutModule,NbSidebarModule, NbCardModule} from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule,NbSidebarModule, NbCardModule, NbListModule, NbButtonModule, NbTabsetModule, NbActionsModule, NbInputModule} from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { IMqttServiceOptions, MqttModule } from "ngx-mqtt";
@@ -44,6 +44,11 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NbEvaIconsModule,
     NbSidebarModule.forRoot(),
     NbCardModule,
+    NbListModule,
+    NbActionsModule,
+    NbButtonModule,
+    NbInputModule,
+    NbTabsetModule,
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     NgxEchartsModule.forRoot({
       echarts: () => import("echarts")

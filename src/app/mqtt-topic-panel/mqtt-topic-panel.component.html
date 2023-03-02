@@ -1,3 +1,8 @@
-<nb-card-header>Mqtt-Thema</nb-card-header>
-<input id="mqtt_topic" [(ngModel)]="topic" placeholder="Clustername/Partition/Benutzername/job_id">
-<button (click)="updateTopic()">Aktualisieren</button>
+
+<nb-card>
+<nb-card-header>mqtt topic</nb-card-header>
+<nb-card-body>
+<input type="text" nbInput fullWidth placeholder="clustername/partition/username/job_id" [(ngModel)]="topic">
+<button nbButton (click)="updateTopic()">update</button>
+</nb-card-body>
+</nb-card>
