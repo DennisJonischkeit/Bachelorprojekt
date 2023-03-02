@@ -14,7 +14,8 @@ import { MqttTopicService } from '../services/mqtt-topic.service';
     styleUrls: ['./event-stream.component.scss'],
 })
 export class EventStreamComponent {
-    
+
+
     events: any[];
     private deviceId: string;
     subscription: Subscription;

@@ -6,13 +6,17 @@ import { MqttTopicService } from './mqtt-topic.service';
 providedIn: 'root'
 })
 export class JobDataService {
+
+  jobs: any[]= [];
+  jobToDisplay = "";
+  
   
 // Service for JSON Objects which represent a job
 private jobDataSubject = new BehaviorSubject<JSON[]>([]);
 jobData = this.jobDataSubject.asObservable();
 
 
-// list of current job ids
+// list of current job ids 
 jobIdsSubject = new BehaviorSubject<string[]>([]);
 jobIdData = this.jobIdsSubject.asObservable();
 
@@ -21,14 +25,29 @@ constructor(private topic: MqttTopicService){}
 
 
 addjobData(job: JSON): void {
+
+  let jobid = this.getValue("jobid", job);
     
   this.jobDataSubject.next([...this.jobDataSubject.value, job]);
-  
-  if (!(this.jobIdsSubject.value.includes(this.getValue("jobid", job)))){
-    this.jobIdsSubject.next([...this.jobIdsSubject.value, this.getValue("jobid", job)]);
-    console.log(this.getValue("jobid", job));
+
+  if(this.jobs.length == 0){
+    this.jobToDisplay = jobid;
   }
 
+  if (!(this.jobIdsSubject.value.includes(this.getValue("jobid", job)))){
+    this.jobIdsSubject.next([...this.jobIdsSubject.value, this.getValue("jobid", job)]);
+    
+    // new job -> new entry in jobs
+    this.jobs.push([jobid, [job]]);
+  }else{
+
+    for(let i=0; i<this.jobs.length; i++){
+      if(this.jobs[i][0] == jobid){
+        this.jobs[i][1].push(job);
+      }
+    }
+
+  }
 
 
 }

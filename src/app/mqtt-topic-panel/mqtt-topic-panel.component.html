@@ -1,8 +1,5 @@
-
-<nb-card>
 <nb-card-header>mqtt topic</nb-card-header>
-<nb-card-body>
-<input type="text" nbInput fullWidth placeholder="clustername/partition/username/job_id" [(ngModel)]="topic">
+<input id ="mqtt_topic" type="text" placeholder="clustername/partition/username/job_id" [(ngModel)]="topic">
 <button nbButton (click)="updateTopic()">update</button>
-</nb-card-body>
-</nb-card>
+
+
