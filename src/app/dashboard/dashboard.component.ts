@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
     
     xAxis: {
       type: 'category',
-      boundaryGap: false,
+      boundaryGap: false
     },
     
 
@@ -113,7 +113,7 @@ export class DashboardComponent implements OnInit {
 
     xAxis: {
       type: 'category',
-      boundaryGap: false,
+      boundaryGap: false
     },
 
     yAxis: {
@@ -184,7 +184,7 @@ export class DashboardComponent implements OnInit {
 
     xAxis: [{
       type: 'category',
-      boundaryGap: false,
+      boundaryGap: false
     }]
   ,
     yAxis: {
@@ -229,7 +229,7 @@ export class DashboardComponent implements OnInit {
 
 
 
-// init vmsize Chart
+// init vmsize chart
 
 merge_vmsizechartOption = {};
 vmsizechartOption: EChartsOption = {
@@ -269,7 +269,7 @@ vmsizechartOption: EChartsOption = {
 
   xAxis: {
     type: 'category',
-    boundaryGap: false,
+    boundaryGap: false
   },
 
   yAxis: {
@@ -300,12 +300,218 @@ vmsizechartOption: EChartsOption = {
 };
 
 
+// init page faults chart
 
+merge_pageschartOption = {};
+pageschartOption: EChartsOption = {
+
+  tooltip:{
+    trigger: "axis",
+    axisPointer:{
+      type: "cross",
+    },
+    order: "valueDesc",
+  },
+
+  legend:{
+    data:["maxpages","avepages"]
+  },
+
+  toolbox: {
+    feature: {
+      dataView: {},
+      saveAsImage: {},
+      restore: {},
+      
+    }
+  },
+
+  dataZoom: [
+    {type: "slider"},
+    {type: "inside"},
+    {
+      type: "slider",
+      yAxisIndex: 0,
+      filterMode: "filter",
+      orient: "vertical",
+      labelFormatter: "{value}",
+    }
+  ],
+
+  xAxis: {
+    type: 'category',
+    boundaryGap: false
+  },
+
+  yAxis: {
+    type: 'value',
+    name: "count",
+  },
+
+  series: [
+    {
+      name: "maxpages",
+      data: [],
+      type: "line",
+      color: "rgb(139,69,19)",
+      smooth: true
+    } as SeriesOption,
+
+    {
+      name: "avepages",
+      data: [],
+      type: 'line',
+      color: "rgb(210,105,30)",
+      smooth: true
+    } as SeriesOption
+
+  ]
+
+
+};
 
   
-  pageschartOption: EChartsOption = {};
-  residentsetsizechartOption: EChartsOption = {};
-  consumedenergychartOption: EChartsOption = {};
+  
+
+
+
+// init resident set size chart
+merge_residentsetsizechartOption = {};
+residentsetsizechartOption: EChartsOption = {
+
+  tooltip:{
+    trigger: "axis",
+    axisPointer:{
+      type: "cross",
+    },
+    order: "valueDesc",
+  },
+
+  legend:{
+    data:["maxrss","averss"]
+  },
+
+  toolbox: {
+    feature: {
+      dataView: {},
+      restore: {},
+      saveAsImage: {}
+      
+    }
+  },
+
+  dataZoom: [
+    {type: "slider"},
+    {type: "inside"},
+    {
+      type: "slider",
+      yAxisIndex: 0,
+      filterMode: "filter",
+      orient: "vertical",
+      labelFormatter: "{value} bytes",
+    }
+  ],
+
+  xAxis: {
+    type: 'category',
+    boundaryGap: false
+  },
+
+  yAxis: {
+    type: 'value',
+    name: "bytes",
+  },
+
+  series: [
+    {
+      name: "maxrss",
+      data: [],
+      type: "line",
+      color: "rgb(69,139,116)",
+      smooth: true
+    } as SeriesOption,
+
+    {
+      name: "averss",
+      data: [],
+      type: 'line',
+      color: "rgb(118,238,198)",
+      smooth: true
+    } as SeriesOption
+
+  ]
+
+
+
+};
+
+
+
+// init consumed energy chart
+
+merge_consumedenergychartOption = {};
+consumedenergychartOption: EChartsOption = {
+
+  tooltip:{
+    trigger: "axis",
+    axisPointer:{
+      type: "cross",
+    },
+
+  },
+
+  legend:{
+    data:["consumedenergy"]
+  },
+
+  toolbox: {
+    feature: {
+      dataView: {},
+      restore: {},
+      saveAsImage: {}
+      
+    }
+  },
+
+  dataZoom: [
+    {type: "slider"},
+    {type: "inside"},
+  ],
+
+  xAxis: {
+    type: 'category',
+    boundaryGap: false
+    
+  },
+
+  yAxis: {
+    type: 'value',
+    name: "joule",
+  },
+
+  series: [
+    {
+      name: "consumedenergy",
+      data: [],
+      type: "line",
+      color: "rgb(255,69,0)",
+      markPoint: {
+        data: [
+
+          {name: "Maximum", type: "max"},
+          {type: "min"}
+        ],
+        
+         
+      },
+      smooth: true
+    } as SeriesOption
+
+  ]
+
+
+
+};
 
 
   
@@ -590,293 +796,197 @@ vmsizechartOption: EChartsOption = {
     };
 
 
+    // merge data of page faults chart
 
-      // option beginning of pagesChart
-      this.pageschartOption = {
+    this.merge_pageschartOption = {
 
-        tooltip:{
-          trigger: "axis",
-          axisPointer:{
-            type: "cross",
-          },
-          order: "valueDesc",
+      tooltip:{
+        trigger: "axis",
+        axisPointer:{
+          type: "cross",
+        },
+        order: "valueDesc",
 
-          formatter: (params: any) => {
-            
-            let content = params[0].axisValueLabel + '<br>'; 
+        formatter: (params: any) => {
+          
+          let content = params[0].axisValueLabel + '<br>'; 
 
-            const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+          const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
 
-            content += "jobid: "+ this.JobDataService.getJobIdByTimestamp(params[0].axisValueLabel,jobData)+"<br>";
-           
-            
-            for (let i = 0; i < sortedcontent.length; i++) {
+          content += "jobid: "+ this.JobDataService.getJobIdByTimestamp(params[0].axisValueLabel,jobData)+"<br>";
+         
+          
+          for (let i = 0; i < sortedcontent.length; i++) {
 
-              var extension ="";
-              if(params[i].seriesName == "maxpages"){
-                extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxpagesnode",jobData)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxpagestask",jobData);
-              }
-
-              const value = '<strong>' + params[i].value + '</strong>'
-              content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
+            var extension ="";
+            if(params[i].seriesName == "maxpages"){
+              extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxpagesnode",jobData)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxpagestask",jobData);
             }
 
-            return content;
+            const value = '<strong>' + params[i].value + '</strong>'
+            content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
           }
-        },
 
-        legend:{
-          data:["maxpages","avepages"]
-        },
+          return content;
+        }
+      },
 
-        toolbox: {
-          feature: {
-            dataView: {},
-            restore: {},
-            saveAsImage: {}
-            
-          }
-        },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: this.JobDataService.getListOf("timestamp", jobData),
+      },
 
-        dataZoom: [
-          {type: "slider"},
-          {type: "inside"},
-          {
-            type: "slider",
-            yAxisIndex: 0,
-            filterMode: "filter",
-            orient: "vertical",
-            labelFormatter: "{value}",
-          }
-        ],
+      series: [
+        {
+          name: "maxpages",
+          data: this.JobDataService.getListOf("maxpages", jobData),
+          type: "line",
+          color: "rgb(139,69,19)",
+          smooth: true
+        } as SeriesOption,
 
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: this.JobDataService.getListOf("timestamp", jobData),
-        },
+        {
+          name: "avepages",
+          data: this.JobDataService.getListOf("avepages",jobData),
+          type: 'line',
+          color: "rgb(210,105,30)",
+          smooth: true
+        } as SeriesOption
 
-        yAxis: {
-          type: 'value',
-          name: "count",
-        },
-
-        series: [
-          {
-            name: "maxpages",
-            data: this.JobDataService.getListOf("maxpages", jobData),
-            type: "line",
-            color: "rgb(139,69,19)",
-            smooth: true
-          } as SeriesOption,
-
-          {
-            name: "avepages",
-            data: this.JobDataService.getListOf("avepages",jobData),
-            type: 'line',
-            color: "rgb(210,105,30)",
-            smooth: true
-          } as SeriesOption
-
-        ]
+      ]
 
 
+
+    };
+
+// merge data of resident set size chart
+
+this.merge_residentsetsizechartOption = {
+
+  tooltip:{
+    trigger: "axis",
+    axisPointer:{
+      type: "cross",
+    },
+    order: "valueDesc",
+
+    formatter: (params: any) => {
+      
+      let content = params[0].axisValueLabel + '<br>'; 
+
+      const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+
+      content += "jobid: "+ this.JobDataService.getJobIdByTimestamp(params[0].axisValueLabel,jobData)+"<br>";
+     
+      
+      for (let i = 0; i < sortedcontent.length; i++) {
+
+        var extension ="";
+        if(params[i].seriesName == "maxrss"){
+          extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxrssnode",jobData)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxrsstask",jobData);
+        }
+
+        const value = '<strong>' + params[i].value + '</strong>'
+        content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
       }
 
+      return content;
+    }
+  },
 
-  // beginning of rss chart
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    data: this.JobDataService.getListOf("timestamp", jobData),
+  },
 
-      this.residentsetsizechartOption = {
+  series: [
+    {
+      name: "maxrss",
+      data: this.JobDataService.getListOf("maxrss", jobData),
+      type: "line",
+      color: "rgb(69,139,116)",
+      smooth: true
+    } as SeriesOption,
 
-        tooltip:{
-          trigger: "axis",
-          axisPointer:{
-            type: "cross",
-          },
-          order: "valueDesc",
+    {
+      name: "averss",
+      data: this.JobDataService.getListOf("averss",jobData),
+      type: 'line',
+      color: "rgb(118,238,198)",
+      smooth: true
+    } as SeriesOption
 
-          formatter: (params: any) => {
-            
-            let content = params[0].axisValueLabel + '<br>'; 
-
-            const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
-
-            content += "jobid: "+ this.JobDataService.getJobIdByTimestamp(params[0].axisValueLabel,jobData)+"<br>";
-           
-            
-            for (let i = 0; i < sortedcontent.length; i++) {
-
-              var extension ="";
-              if(params[i].seriesName == "maxrss"){
-                extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxrssnode",jobData)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxrsstask",jobData);
-              }
-
-              const value = '<strong>' + params[i].value + '</strong>'
-              content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
-            }
-
-            return content;
-          }
-        },
-
-        legend:{
-          data:["maxrss","averss"]
-        },
-
-        toolbox: {
-          feature: {
-            dataView: {},
-            restore: {},
-            saveAsImage: {}
-            
-          }
-        },
-
-        dataZoom: [
-          {type: "slider"},
-          {type: "inside"},
-          {
-            type: "slider",
-            yAxisIndex: 0,
-            filterMode: "filter",
-            orient: "vertical",
-            labelFormatter: "{value} bytes",
-          }
-        ],
-
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: this.JobDataService.getListOf("timestamp", jobData),
-        },
-
-        yAxis: {
-          type: 'value',
-          name: "bytes",
-        },
-
-        series: [
-          {
-            name: "maxrss",
-            data: this.JobDataService.getListOf("maxrss", jobData),
-            type: "line",
-            color: "rgb(69,139,116)",
-            smooth: true
-          } as SeriesOption,
-
-          {
-            name: "averss",
-            data: this.JobDataService.getListOf("averss",jobData),
-            type: 'line',
-            color: "rgb(118,238,198)",
-            smooth: true
-          } as SeriesOption
-
-        ]
+  ]
 
 
 
+};
+     
+
+// merge data of consumed energy chart
+
+this.merge_consumedenergychartOption = {
+
+  tooltip:{
+    trigger: "axis",
+    axisPointer:{
+      type: "cross",
+    },
+    formatter: (params: any) => {
+      
+      let content = params[0].axisValueLabel + '<br>'; 
+
+      const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+     
+      
+      for (let i = 0; i < sortedcontent.length; i++) {
+
+        var extension ="";
+        // passende job id einfügen
+        extension = "jobid: "+ this.JobDataService.getJobIdByTimestamp(params[0].axisValueLabel,jobData);
+
+
+        const value = '<strong>' + params[i].value + '</strong>'
+        content +=  extension +"<br>" +params[i].marker + ' ' + params[i].seriesName + ' ' + value +"<br>";
       }
 
-      // beginning of consumed energy chartoption
+      return content;
+    }
 
-      this.consumedenergychartOption = {
+  },
 
-        tooltip:{
-          trigger: "axis",
-          axisPointer:{
-            type: "cross",
-          },
-          formatter: (params: any) => {
-            
-            let content = params[0].axisValueLabel + '<br>'; 
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    data: this.JobDataService.getListOf("timestamp", jobData),
+  },
 
-            const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
-           
-            
-            for (let i = 0; i < sortedcontent.length; i++) {
+  series: [
+    {
+      name: "consumedenergy",
+      data: this.JobDataService.getListOf("consumedenergy", jobData),
+      type: "line",
+      color: "rgb(255,69,0)",
+      markPoint: {
+        data: [
 
-              var extension ="";
-              // passende job id einfügen
-              extension = "jobid: "+ this.JobDataService.getJobIdByTimestamp(params[0].axisValueLabel,jobData);
-
-
-              const value = '<strong>' + params[i].value + '</strong>'
-              content +=  extension +"<br>" +params[i].marker + ' ' + params[i].seriesName + ' ' + value +"<br>";
-            }
-
-            return content;
-          }
-
-        },
-
-        legend:{
-          data:["consumedenergy"]
-        },
-
-        toolbox: {
-          feature: {
-            dataView: {},
-            restore: {},
-            saveAsImage: {}
-            
-          }
-        },
-
-        dataZoom: [
-          {type: "slider"},
-          {type: "inside"},
+          {name: "Maximum", type: "max"},
+          {type: "min"}
         ],
+        
+         
+      },
+      smooth: true
+    } as SeriesOption
 
-        xAxis: {
-          type: 'category',
-          boundaryGap: false,
-          data: this.JobDataService.getListOf("timestamp", jobData),
-        },
-
-        yAxis: {
-          type: 'value',
-          name: "joule",
-        },
-
-        series: [
-          {
-            name: "consumedenergy",
-            data: this.JobDataService.getListOf("consumedenergy", jobData),
-            type: "line",
-            color: "rgb(255,69,0)",
-            markPoint: {
-              data: [
-
-                {name: "Maximum", type: "max"},
-                {type: "min"}
-              ],
-              
-               
-            },
-            smooth: true
-          } as SeriesOption
-
-        ]
+  ]
 
 
 
-      }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+};
+      
 
 
 

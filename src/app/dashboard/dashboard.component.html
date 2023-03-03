@@ -19,66 +19,7 @@
 
       </nb-tab>
 
-      <!--
-
-      <nb-tab tabTitle="avecpufreq">
-
-        <nb-card>
-          <div style="height:450px; width:auto" echarts [options]="avecpufreqchartOption" class="avecpufreq-chart"></div>
-        </nb-card>
-
-      </nb-tab>
-
-      <nb-tab tabTitle="cpu">
-        <nb-card>
-
-          <div style="height:450px; width:auto" echarts [options]="cpuchartOption" class="cpu-chart"></div>
-
-        </nb-card>
-      </nb-tab>
-
-      <nb-tab tabTitle="disk-read/write">
-        <nb-card>
-
-          <div style="height:450px; width:auto" echarts [options]="diskread_writechartOption" class="diskread/write-chart"></div>
-
-        </nb-card>
-      </nb-tab>
-
-      <nb-tab tabTitle="vmsize">
-        <nb-card>
-
-          <div style="height:450px; width:auto" echarts [options]="vmsizechartOption" class="vmsize-chart"></div>
-
-        </nb-card>
-      </nb-tab>
-
-      <nb-tab tabTitle="page faults">
-        <nb-card>
-
-          <div style="height:450px; width:auto" echarts [options]="pageschartOption" class="pages-chart"></div>
-
-        </nb-card>
-      </nb-tab>
-
-      <nb-tab tabTitle="resident set size">
-        <nb-card>
-
-          <div style="height:450px; width:auto" echarts [options]="residentsetsizechartOption" class="residentsetsize-chart"></div>
-
-        </nb-card>
-      </nb-tab>
-
-      <nb-tab tabTitle="consumed energy">
-        <nb-card>
-
-          <div style="height:450px; width:auto" echarts [options]="consumedenergychartOption" class="consumedenergy-chart"></div>
-
-        </nb-card>
-      </nb-tab>
-
-    -->
-
+ 
       <nb-tab tabTitle="avecpufreq">
         <nb-card>
 
@@ -114,12 +55,29 @@
       </nb-tab>
 
 
+      <nb-tab tabTitle="page faults">
+        <nb-card>
 
+          <div style="height:450px; width:auto" echarts [options]="pageschartOption" [merge]="merge_pageschartOption" class="pages-chart"></div>
 
+        </nb-card>
+      </nb-tab>
 
+      <nb-tab tabTitle="resident set size">
+        <nb-card>
 
+          <div style="height:450px; width:auto" echarts [options]="residentsetsizechartOption" [merge]="merge_residentsetsizechartOption" class="residentsetsize-chart"></div>
 
+        </nb-card>
+      </nb-tab>
 
+      <nb-tab tabTitle="consumed energy">
+        <nb-card>
+
+          <div style="height:450px; width:auto" echarts [options]="consumedenergychartOption" [merge]="merge_consumedenergychartOption" class="consumedenergy-chart"></div>
+
+        </nb-card>
+      </nb-tab>
 
 
     </nb-tabset>
