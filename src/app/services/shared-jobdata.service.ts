@@ -92,10 +92,14 @@ for (const job of jobdata){
 
 
 
-getListOf(key: string, jobdata: any[]): any[] {
+getListOf(key: string, jobdata: any[], currentjobid:string): any[] {
     const result: any[] = [];
   
     for (const job of jobdata) {
+
+      if(!(job["jobid"]==currentjobid)){
+        continue;
+      }
 
       if (key == "avecpufreq"){
         result.push(job[key].slice(0, job[key].length - 1));
