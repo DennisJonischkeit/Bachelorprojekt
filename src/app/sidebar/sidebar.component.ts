@@ -10,8 +10,11 @@ export class SidebarComponent implements OnInit {
   sidebarData: string[] = [];
   selectedJob = "";
 
-  selectedJobRoutine(){
-    console.log("clicked");
+  selectedJobRoutine(jobid: string){
+    this.selectedJob = jobid;
+    console.log("clicked on job: ", jobid);
+    this.JobDataService.current_selectedJobId = jobid;
+    this.JobDataService.selectedJobSubject.next(jobid);
   };
 
   constructor(private JobDataService: JobDataService){}
@@ -29,8 +32,6 @@ export class SidebarComponent implements OnInit {
       }
 
       this.sidebarData = sidebarData;
-
-
 
 
     });

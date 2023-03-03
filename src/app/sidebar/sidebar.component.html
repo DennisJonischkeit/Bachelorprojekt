@@ -5,7 +5,7 @@
     </nb-card-header>
     <nb-list>
       <nb-list-item *ngFor="let jobid of sidebarData">
-        <button nbButton (click)="selectedJobRoutine()"> {{jobid}} </button>
+        <button nbButton (click)="selectedJobRoutine(jobid)"> {{jobid}} </button>
       </nb-list-item>
     </nb-list>
   </nb-card>

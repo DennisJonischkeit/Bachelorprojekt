@@ -2,6 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import { EChartsOption } from 'echarts';
 import { JobDataService } from '../services/shared-jobdata.service';
 import { SeriesOption } from 'echarts';
+import { filter } from "rxjs/operators";
 
 
 @Component({
@@ -12,6 +13,8 @@ import { SeriesOption } from 'echarts';
 export class DashboardComponent implements OnInit {
 
   selectedTab = "avecpufreq";
+
+  
 
   cardData: {header: string, content: string}[] = []
   
@@ -523,6 +526,20 @@ consumedenergychartOption: EChartsOption = {
 
 
   ngOnInit(): void {
+
+    // beginning of the implementation of the new datastructure
+
+
+    // subscribe to selectedJob subject
+    this.JobDataService.selectedJob.pipe(
+      // filter for changes to the currently selected job
+      filter(selectedJob => selectedJob === this.JobDataService.current_selectedJobId)
+    ).subscribe(() => {
+      // handle updates to the list of objects for the currently selected job
+      const jobObjects = this.JobDataService.getDataListOfJobID(this.JobDataService.current_selectedJobId);
+      console.log('job objects for', this.JobDataService.current_selectedJobId, ':', jobObjects);
+    });
+    
 
 
    

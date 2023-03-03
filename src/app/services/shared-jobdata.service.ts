@@ -9,8 +9,7 @@ providedIn: 'root'
 export class JobDataService {
 
   jobs: any[]= [];
-  selectedJob = "";
-  
+  current_selectedJobId = "";
   
 // Service for JSON Objects which represent a job
 private jobDataSubject = new BehaviorSubject<JSON[]>([]);
@@ -21,6 +20,9 @@ jobData = this.jobDataSubject.asObservable();
 jobIdsSubject = new BehaviorSubject<string[]>([]);
 jobIdData = this.jobIdsSubject.asObservable();
 
+// current selected jobid
+selectedJobSubject = new BehaviorSubject<string>('');
+selectedJob = this.selectedJobSubject.asObservable();
 
 constructor(private topic: MqttTopicService){}
 
@@ -32,7 +34,8 @@ addjobData(job: JSON): void {
   this.jobDataSubject.next([...this.jobDataSubject.value, job]);
 
   if(this.jobs.length == 0){
-    this.selectedJob = jobid;
+    this.selectedJobSubject.next(jobid);
+    this.current_selectedJobId = jobid;
   }
 
   if (!(this.jobIdsSubject.value.includes(this.getValue("jobid", job)))){
@@ -136,7 +139,14 @@ addTimeStamp(obj: any): any {
   return {...obj, timestamp};
 }
 
+getDataListOfJobID(jobid: string) {
+  for(let i=0; i<this.jobs.length; i++){
+    if(this.jobs[i][0] == jobid){
+      return this.jobs[i][1];
+    }
+  }
 
+}
 
 
 }
