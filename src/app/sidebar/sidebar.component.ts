@@ -10,6 +10,10 @@ export class SidebarComponent implements OnInit {
   sidebarData: string[] = [];
   selectedJob = "";
 
+  selectedJobRoutine(){
+    console.log("clicked");
+  };
+
   constructor(private JobDataService: JobDataService){}
 
   ngOnInit(): void {

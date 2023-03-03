@@ -19,6 +19,8 @@
 
       </nb-tab>
 
+      <!--
+
       <nb-tab tabTitle="avecpufreq">
 
         <nb-card>
@@ -75,10 +77,52 @@
         </nb-card>
       </nb-tab>
 
+    -->
+
+      <nb-tab tabTitle="avecpufreq">
+        <nb-card>
+
+          <div style="height:450px; width:auto" echarts [options]="avecpufreqchartOption" [merge]="merge_avecpufreqchartOption" class="avecpufreq-chart"></div>
+
+        </nb-card>
+      </nb-tab>
+
+
+      <nb-tab tabTitle="cpu">
+        <nb-card>
+
+          <div style="height:450px; width:auto" echarts [options]="cpuchartOption" [merge]="merge_cpuchartOption" class="cpu-chart"></div>
+
+        </nb-card>
+      </nb-tab>
+
+      <nb-tab tabTitle="disk-read/write">
+        <nb-card>
+
+          <div style="height:450px; width:auto" echarts [options]="diskread_writechartOption" [merge]="merge_diskread_writechartOption" class="diskread/write-chart"></div>
+
+        </nb-card>
+      </nb-tab>
+
+
+      <nb-tab tabTitle="vmsize">
+        <nb-card>
+
+          <div style="height:450px; width:auto" echarts [options]="vmsizechartOption" [merge]="merge_vmsizechartOption" class="vmsize-chart"></div>
+
+        </nb-card>
+      </nb-tab>
+
+
+
+
+
+
+
+
+
 
     </nb-tabset>
-
-
 
     </nb-card-body>
   </nb-card>

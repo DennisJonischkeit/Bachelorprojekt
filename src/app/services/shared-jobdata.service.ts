@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { MqttTopicService } from './mqtt-topic.service';
 
+
 @Injectable({
 providedIn: 'root'
 })
 export class JobDataService {
 
   jobs: any[]= [];
-  jobToDisplay = "";
+  selectedJob = "";
   
   
 // Service for JSON Objects which represent a job
@@ -31,7 +32,7 @@ addjobData(job: JSON): void {
   this.jobDataSubject.next([...this.jobDataSubject.value, job]);
 
   if(this.jobs.length == 0){
-    this.jobToDisplay = jobid;
+    this.selectedJob = jobid;
   }
 
   if (!(this.jobIdsSubject.value.includes(this.getValue("jobid", job)))){
