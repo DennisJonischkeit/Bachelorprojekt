@@ -1001,11 +1001,18 @@ this.merge_consumedenergychartOption = {
 
     this.JobDataService.selectedJob.subscribe(jobid =>{
 
+      
+
       this.selectedJobId = jobid;
       let currentjobid = this.selectedJobId;
 
-      this.update_dashboard(currentjobid);
+      if (!(currentjobid == "")){
 
+        this.update_dashboard(currentjobid);
+
+      }
+
+    
 
     });
 
@@ -1013,19 +1020,36 @@ this.merge_consumedenergychartOption = {
 
    this.JobDataService.jobData.subscribe((jobData: JSON[]) => {
 
+
+    
+    let currentjobid = "";
     let currentjobdata = jobData[jobData.length - 1];
-    let currentjobid = this.JobDataService.getValue("jobid", currentjobdata);
+
+
+    if(!(typeof(currentjobdata) == "undefined")){
+
+     currentjobid = this.JobDataService.getValue("jobid", currentjobdata);
+
+    }
 
 
     if(this.JobDataService.selectedJobSubject.value == ""){
-      this.update_dashboard(currentjobid);
+
+      if(!(typeof(currentjobdata) == "undefined")){
+
+        this.update_dashboard(currentjobid);
+      }
+
     }
     
     
     if (this.selectedJobId == currentjobid){
 
+      if(!(typeof(currentjobdata) == "undefined")){
 
-      this.update_dashboard(currentjobid);
+        this.update_dashboard(currentjobid);
+      }
+
 
     }
 
