@@ -1015,6 +1015,11 @@ this.merge_consumedenergychartOption = {
 
     let currentjobdata = jobData[jobData.length - 1];
     let currentjobid = this.JobDataService.getValue("jobid", currentjobdata);
+
+
+    if(this.JobDataService.selectedJobSubject.value == ""){
+      this.update_dashboard(currentjobid);
+    }
     
     
     if (this.selectedJobId == currentjobid){
@@ -1027,7 +1032,7 @@ this.merge_consumedenergychartOption = {
     });
 
 
-    
+
 }
 }
 

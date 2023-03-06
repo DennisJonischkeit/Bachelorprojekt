@@ -30,15 +30,9 @@ constructor(private topic: MqttTopicService){}
 addjobData(job: JSON): void {
 
   let jobid = this.getValue("jobid", job);
-    
-  this.jobDataSubject.next([...this.jobDataSubject.value, job]);
-
-  if(this.jobs.length == 0){
-    this.selectedJobSubject.next(jobid);
-    this.current_selectedJobId = jobid;
-  }
 
   if (!(this.jobIdsSubject.value.includes(this.getValue("jobid", job)))){
+
     this.jobIdsSubject.next([...this.jobIdsSubject.value, this.getValue("jobid", job)]);
     
     // new job -> new entry in jobs
@@ -52,6 +46,13 @@ addjobData(job: JSON): void {
     }
 
   }
+
+  if(this.jobs.length == 0){
+    this.current_selectedJobId = jobid;
+    this.selectedJobSubject.next(jobid);
+  }
+
+  this.jobDataSubject.next([...this.jobDataSubject.value, job]);
 
 
 }
