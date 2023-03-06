@@ -58,7 +58,7 @@ export class EventStreamComponent {
 
                 
                 this.JobDataService.addjobData(newitem);
-                console.log("Es kommen daten an...");
+                console.log("Es kommen daten an...", newitem);
                 
                 
               
