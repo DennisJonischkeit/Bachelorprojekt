@@ -1025,24 +1025,31 @@ this.merge_consumedenergychartOption = {
     let currentjobid = "";
     let currentjobdata = jobData[jobData.length - 1];
 
+    if(!(typeof(currentjobdata) == "undefined")){
+
+    currentjobid = this.JobDataService.getValue("jobid", currentjobdata);
+    }
+    
+
+
+    // case of auto select when a user has not clicked on a jobid
 
     if(!(typeof(currentjobdata) == "undefined")){
 
-     currentjobid = this.JobDataService.getValue("jobid", currentjobdata);
-
-    }
-
-
     if(this.JobDataService.selectedJobSubject.value == ""){
 
-      if(!(typeof(currentjobdata) == "undefined")){
+
+        this.JobDataService.selectedJobSubject.next(currentjobid);
+
+        this.selectedJobId = currentjobid;
 
         this.update_dashboard(currentjobid);
-      }
+      
 
     }
+  }
     
-    
+    // case of chart update if the new object is the selected jobid
     if (this.selectedJobId == currentjobid){
 
       if(!(typeof(currentjobdata) == "undefined")){
