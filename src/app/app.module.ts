@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule, NbLayoutModule,NbSidebarModule, NbCardModule, NbListModule, NbButtonModule, NbTabsetModule, NbActionsModule, NbInputModule, NbToggleModule} from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule,NbSidebarModule, NbCardModule, NbListModule, NbButtonModule, NbTabsetModule, NbActionsModule, NbInputModule, NbToggleModule, NbSelectModule} from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { IMqttServiceOptions, MqttModule } from "ngx-mqtt";
@@ -45,6 +45,7 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NbSidebarModule.forRoot(),
     NbCardModule,
     NbListModule,
+    NbSelectModule,
     NbActionsModule,
     NbButtonModule,
     NbToggleModule,

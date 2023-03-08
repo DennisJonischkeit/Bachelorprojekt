@@ -13,10 +13,13 @@ export class DashboardComponent implements OnInit {
 
   selectedTab = "avecpufreq";
   selectedJobId: string;
+  selectedtimestamp = "";
+  timestamplist: any[] = [];
 
   
 
-  cardData: {header: string, content: string}[] = []
+  cardData: {header: string, content: string}[] = [];
+  selectedcardData: {header: string, content: string}[] = [];
   
 
   //init avecpufreq Option
@@ -525,7 +528,49 @@ consumedenergychartOption: EChartsOption = {
   }
 
 
+  onSelectedTimestampChange(selectedTimestamp: string){
+
+    this.update_selectedCardData(selectedTimestamp, this.selectedJobId);
+
+  }
+
+  update_selectedCardData(timestamp: string, jobid: string){
+
+    let datalist = this.JobDataService.getDataListOfJobID(jobid);
+    this.timestamplist = this.JobDataService.getListOf("timestamp",datalist,jobid);
+
+    if(!(this.selectedtimestamp == "")){
+        
+    for(let i=0; i<datalist.length; i++){
+
+      if(datalist[i]["timestamp"] == timestamp){
+
+        datalist[i];
+
+
+        let selectedcardData = [];
+
+    for (const header of this.JobDataService.getkeysOfObject(datalist[i])){
+      let content = this.JobDataService.getValue(header, datalist[i]);
+      selectedcardData.push({header, content});
+    }
+
+    this.selectedcardData = selectedcardData;
+
+      }
+
+    }
+  }
+   
+
+  };
+
+
   update_dashboard(currentjobid: string){
+
+
+    // update selectedCardData
+    this.update_selectedCardData(this.selectedtimestamp, currentjobid);
 
     let currentjobdata = this.JobDataService.getDataListOfJobID(currentjobid);
     currentjobdata = currentjobdata[currentjobdata.length-1];
@@ -537,10 +582,10 @@ consumedenergychartOption: EChartsOption = {
     for (const header of this.JobDataService.getkeysOfObject(currentjobdata)){
       let content = this.JobDataService.getValue(header, currentjobdata);
       cardData.push({header, content});
-      //this.cardData.push({"jobid": topic, "data":{}})
     }
     
     this.cardData = cardData;
+
 
     // merge data of avecpufreq chart 
 
@@ -562,7 +607,7 @@ consumedenergychartOption: EChartsOption = {
 
             var extension ="";
             // passende job id einfügen
-            extension = "jobid: "+ currentjobid +"<br>";
+            extension = "jobid: "+ currentjobid;
 
 
             const value = '<strong>' + params[i].value + '</strong>'
