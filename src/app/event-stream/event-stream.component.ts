@@ -56,9 +56,12 @@ export class EventStreamComponent {
                 // timestemp in Object reinlegen
                 const newitem = this.JobDataService.addTimeStamp(item);
 
+                let item_topic = this.eventMqtt.endpoint_static;
                 
-                this.JobDataService.addjobData(newitem);
-                console.log("Es kommen daten an...", newitem);
+                this.JobDataService.addjobData(newitem, item_topic);
+                //console.log("Es kommen daten an...", newitem);
+                
+                
                 
                 
               
