@@ -80,23 +80,10 @@ getValue(key: string, job: JSON){
 
 
 
-getJobIdByTimestamp(timestamp: string, jobdata: any[]): any{
+getValueByTimestamp(timestamp: string, key: string, jobdata: any[], jobid:string): any{
 
 for (const job of jobdata){
-
-  if (job["timestamp"] == timestamp){
-    return job["jobid"];
-  }
-
-}
-
-}
-
-
-getValueByTimestamp(timestamp: string, key: string, jobdata: any[]): any{
-
-for (const job of jobdata){
-  if(job["timestamp"] == timestamp){
+  if((job["timestamp"] == timestamp) && (job["jobid"] == jobid)){
     return job[key];
   }
 
@@ -154,9 +141,12 @@ timeToSeconds(time: string): number {
 
 addTimeStamp(obj: any): any {
   const now = new Date();
-  const timestamp = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}T${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}.${now.getMilliseconds().toString().padStart(3, '0')}Z`;
+  const timestamp = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}T${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}.000Z`;
   return {...obj, timestamp};
 }
+
+
+
 
 getDataListOfJobID(jobid: string) {
   for(let i=0; i<this.jobs.length; i++){
@@ -258,7 +248,17 @@ getUserFromTopic(topic: string){
 
 }
 
+mergeLists(timelist: string[], datalist: string[]){
 
+  var newlist = [];
+
+  for(let i=0;i<timelist.length;i++ ){
+    newlist.push([timelist[i], datalist[i]]);
+  }
+
+  return newlist;
+
+}
 
 
 

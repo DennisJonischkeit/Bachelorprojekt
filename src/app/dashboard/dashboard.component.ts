@@ -600,7 +600,7 @@ consumedenergychartOption: EChartsOption = {
           
           let content = params[0].axisValueLabel + '<br>'; 
 
-          const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+          const sortedcontent = params.sort((a: any, b: any) => b.value[1] - a.value[1]);
          
           
           for (let i = 0; i < sortedcontent.length; i++) {
@@ -610,7 +610,7 @@ consumedenergychartOption: EChartsOption = {
             extension = "jobid: "+ currentjobid;
 
 
-            const value = '<strong>' + params[i].value + '</strong>'
+            const value = '<strong>' + params[i].value[1] + '</strong>'
             content +=  extension +"<br>" +params[i].marker + ' ' + params[i].seriesName + ' ' + value +"<br>";
           }
 
@@ -619,14 +619,14 @@ consumedenergychartOption: EChartsOption = {
       },
 
       xAxis: {
-        type: 'category',
+        type: 'time',
         boundaryGap: false,
-        data: this.JobDataService.getListOf("timestamp", jobData, currentjobid),
       },
 
       series:[
         {
-          data: this.JobDataService.getListOf("avecpufreq", jobData, currentjobid),
+          data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid), this.JobDataService.getListOf("avecpufreq", jobData, currentjobid)),
+          
         }as SeriesOption,
       ]
     };
@@ -644,7 +644,7 @@ consumedenergychartOption: EChartsOption = {
           
           let content = params[0].axisValueLabel + '<br>'; 
 
-          const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+          const sortedcontent = params.sort((a: any, b: any) => b.value[1] - a.value[1]);
 
           content += "jobid: "+ currentjobid +"<br>";
          
@@ -653,10 +653,12 @@ consumedenergychartOption: EChartsOption = {
 
             var extension ="";
             if(params[i].seriesName == "mincpu"){
-              extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"mincpunode",jobData)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"mincputask",jobData);
+              let newstring = new Date(params[0].axisValueLabel.toString()).toISOString();
+             
+              extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(newstring,"mincpunode",jobData, currentjobid)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(newstring,"mincputask",jobData, currentjobid);
             }
 
-            const value = '<strong>' + params[i].value + '</strong>'
+            const value = '<strong>' + params[i].value[1] + '</strong>'
             content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
           }
 
@@ -667,15 +669,15 @@ consumedenergychartOption: EChartsOption = {
 
       },
       xAxis: {
-        type: 'category',
+        type: 'time',
         boundaryGap: false,
-        data: this.JobDataService.getListOf("timestamp", jobData, currentjobid),
+        
       },
 
       series: [
         {
           name: "avecpu",
-          data: this.JobDataService.getListOf("avecpu", jobData, currentjobid),
+          data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid),this.JobDataService.getListOf("avecpu", jobData, currentjobid)),
           type: "line",
           color: "rgb(30,144,255)",
           smooth: true
@@ -683,7 +685,7 @@ consumedenergychartOption: EChartsOption = {
 
         {
           name: "mincpu",
-          data: this.JobDataService.getListOf("mincpu",jobData, currentjobid),
+          data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid), this.JobDataService.getListOf("mincpu",jobData, currentjobid)),
           type: 'line',
           color: "rgb(16,78,139)",
           smooth: true
@@ -702,14 +704,15 @@ consumedenergychartOption: EChartsOption = {
         axisPointer:{
           type: "cross",
         },
-        order: "valueDesc",
+        //order: "valueDesc",
 
         
         formatter: (params: any) => {
           
           let content = params[0].axisValueLabel + '<br>'; 
 
-          const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+          const sortedcontent = params.sort((a: any, b: any) => b.value[1] - a.value[1]);
+
 
           content += "jobid: "+ currentjobid +"<br>";
          
@@ -718,14 +721,16 @@ consumedenergychartOption: EChartsOption = {
 
             var extension ="";
             if(params[i].seriesName == "maxdiskread"){
-              extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxdiskreadnode",jobData)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxdiskreadtask",jobData);
+              let newstring = new Date(params[0].axisValueLabel.toString()).toISOString();
+              extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(newstring,"maxdiskreadnode",jobData, currentjobid)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(newstring,"maxdiskreadtask",jobData, currentjobid);
             }
 
             if(params[i].seriesName == "maxdiskwrite"){
-              extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxdiskwritenode",jobData)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxdiskwritetask",jobData);
+              let newstring = new Date(params[0].axisValueLabel.toString()).toISOString();
+              extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(newstring,"maxdiskwritenode",jobData, currentjobid)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(newstring,"maxdiskwritetask",jobData, currentjobid);
             }
 
-            const value = '<strong>' + params[i].value + '</strong>'
+            const value = '<strong>' + params[i].value[1] + '</strong>'
             content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
           }
 
@@ -735,15 +740,14 @@ consumedenergychartOption: EChartsOption = {
 
       },
       xAxis: [{
-        type: 'category',
+        type: 'time',
         boundaryGap: false,
-        data: this.JobDataService.getListOf("timestamp", jobData, currentjobid),
       }],
 
       series: [
         {
           name: "avediskwrite",
-          data: this.JobDataService.getListOf("avediskwrite", jobData, currentjobid),
+          data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid), this.JobDataService.getListOf("avediskwrite", jobData, currentjobid)),
           type: "line",
           color:"rgb(0,255,0)",
           smooth: true
@@ -751,7 +755,7 @@ consumedenergychartOption: EChartsOption = {
 
         {
           name: "avediskread",
-          data: this.JobDataService.getListOf("avediskread",jobData, currentjobid),
+          data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid), this.JobDataService.getListOf("avediskread",jobData, currentjobid)),
           type: 'line',
           color:"rgb(255,0,255)",
           smooth: true
@@ -759,7 +763,7 @@ consumedenergychartOption: EChartsOption = {
 
         {
           name: "maxdiskwrite",
-          data: this.JobDataService.getListOf("maxdiskwrite",jobData, currentjobid),
+          data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid), this.JobDataService.getListOf("maxdiskwrite",jobData, currentjobid)),
           type: 'line',
           color:"rgb(0,100,0)",
           smooth: true
@@ -767,7 +771,7 @@ consumedenergychartOption: EChartsOption = {
 
         {
           name: "maxdiskread",
-          data: this.JobDataService.getListOf("maxdiskread",jobData, currentjobid),
+          data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid), this.JobDataService.getListOf("maxdiskread",jobData, currentjobid)),
           type: 'line',
           color:"rgb(139,0,139)",
           smooth: true
@@ -793,7 +797,7 @@ consumedenergychartOption: EChartsOption = {
           
           let content = params[0].axisValueLabel + '<br>'; 
 
-          const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+          const sortedcontent = params.sort((a: any, b: any) => b.value[1] - a.value[1]);
 
           content += "jobid: "+ currentjobid +"<br>";
          
@@ -802,10 +806,11 @@ consumedenergychartOption: EChartsOption = {
 
             var extension ="";
             if(params[i].seriesName == "maxvmsize"){
-              extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxvmsizenode",jobData)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxvmsizetask",jobData);
+              let newstring = new Date(params[0].axisValueLabel.toString()).toISOString();
+              extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(newstring,"maxvmsizenode",jobData, currentjobid)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(newstring,"maxvmsizetask",jobData, currentjobid);
             }
 
-            const value = '<strong>' + params[i].value + '</strong>'
+            const value = '<strong>' + params[i].value[1] + '</strong>'
             content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
           }
 
@@ -814,15 +819,14 @@ consumedenergychartOption: EChartsOption = {
       },
 
       xAxis: {
-        type: 'category',
+        type: 'time',
         boundaryGap: false,
-        data: this.JobDataService.getListOf("timestamp", jobData, currentjobid),
       },
 
       series: [
         {
           name: "maxvmsize",
-          data: this.JobDataService.getListOf("maxvmsize", jobData, currentjobid),
+          data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid), this.JobDataService.getListOf("maxvmsize", jobData, currentjobid)),
           type: "bar",
           color: "rgb(255,140,0)",
           smooth: true
@@ -830,7 +834,7 @@ consumedenergychartOption: EChartsOption = {
 
         {
           name: "avevmsize",
-          data: this.JobDataService.getListOf("avevmsize",jobData, currentjobid),
+          data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid), this.JobDataService.getListOf("avevmsize",jobData, currentjobid)),
           type: 'bar',
           color: "rgb(255,215,0)",
           smooth: true
@@ -857,7 +861,7 @@ consumedenergychartOption: EChartsOption = {
           
           let content = params[0].axisValueLabel + '<br>'; 
 
-          const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+          const sortedcontent = params.sort((a: any, b: any) => b.value[1] - a.value[1]);
 
           content += "jobid: "+ currentjobid +"<br>";
          
@@ -866,10 +870,11 @@ consumedenergychartOption: EChartsOption = {
 
             var extension ="";
             if(params[i].seriesName == "maxpages"){
-              extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxpagesnode",jobData)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxpagestask",jobData);
+              let newstring = new Date(params[0].axisValueLabel.toString()).toISOString();
+              extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(newstring,"maxpagesnode",jobData, currentjobid)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(newstring,"maxpagestask",jobData, currentjobid);
             }
 
-            const value = '<strong>' + params[i].value + '</strong>'
+            const value = '<strong>' + params[i].value[1] + '</strong>'
             content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
           }
 
@@ -878,15 +883,14 @@ consumedenergychartOption: EChartsOption = {
       },
 
       xAxis: {
-        type: 'category',
+        type: 'time',
         boundaryGap: false,
-        data: this.JobDataService.getListOf("timestamp", jobData, currentjobid),
       },
 
       series: [
         {
           name: "maxpages",
-          data: this.JobDataService.getListOf("maxpages", jobData, currentjobid),
+          data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid), this.JobDataService.getListOf("maxpages", jobData, currentjobid)),
           type: "line",
           color: "rgb(139,69,19)",
           smooth: true
@@ -894,7 +898,7 @@ consumedenergychartOption: EChartsOption = {
 
         {
           name: "avepages",
-          data: this.JobDataService.getListOf("avepages",jobData, currentjobid),
+          data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid), this.JobDataService.getListOf("avepages",jobData, currentjobid)),
           type: 'line',
           color: "rgb(210,105,30)",
           smooth: true
@@ -921,7 +925,7 @@ this.merge_residentsetsizechartOption = {
       
       let content = params[0].axisValueLabel + '<br>'; 
 
-      const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+      const sortedcontent = params.sort((a: any, b: any) => b.value[1] - a.value[1]);
 
       content += "jobid: "+ currentjobid +"<br>";
      
@@ -930,10 +934,11 @@ this.merge_residentsetsizechartOption = {
 
         var extension ="";
         if(params[i].seriesName == "maxrss"){
-          extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxrssnode",jobData)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(params[0].axisValueLabel,"maxrsstask",jobData);
+          let newstring = new Date(params[0].axisValueLabel.toString()).toISOString();
+          extension = "<br>on node: "+ this.JobDataService.getValueByTimestamp(newstring,"maxrssnode",jobData, currentjobid)+"<br>task ID: "+ this.JobDataService.getValueByTimestamp(newstring,"maxrsstask",jobData, currentjobid);
         }
 
-        const value = '<strong>' + params[i].value + '</strong>'
+        const value = '<strong>' + params[i].value[1] + '</strong>'
         content +=  params[i].marker + ' ' + params[i].seriesName + ' ' + value + extension +"<br>";
       }
 
@@ -942,15 +947,14 @@ this.merge_residentsetsizechartOption = {
   },
 
   xAxis: {
-    type: 'category',
+    type: 'time',
     boundaryGap: false,
-    data: this.JobDataService.getListOf("timestamp", jobData, currentjobid),
   },
 
   series: [
     {
       name: "maxrss",
-      data: this.JobDataService.getListOf("maxrss", jobData, currentjobid),
+      data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid), this.JobDataService.getListOf("maxrss", jobData, currentjobid)),
       type: "line",
       color: "rgb(69,139,116)",
       smooth: true
@@ -958,7 +962,7 @@ this.merge_residentsetsizechartOption = {
 
     {
       name: "averss",
-      data: this.JobDataService.getListOf("averss",jobData, currentjobid),
+      data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid), this.JobDataService.getListOf("averss",jobData, currentjobid)),
       type: 'line',
       color: "rgb(118,238,198)",
       smooth: true
@@ -984,7 +988,7 @@ this.merge_consumedenergychartOption = {
       
       let content = params[0].axisValueLabel + '<br>'; 
 
-      const sortedcontent = params.sort((a: any, b: any) => b.value - a.value);
+      const sortedcontent = params.sort((a: any, b: any) => b.value[1] - a.value[1]);
      
       
       for (let i = 0; i < sortedcontent.length; i++) {
@@ -994,7 +998,7 @@ this.merge_consumedenergychartOption = {
         extension = "jobid: "+ currentjobid;
 
 
-        const value = '<strong>' + params[i].value + '</strong>'
+        const value = '<strong>' + params[i].value[1] + '</strong>'
         content +=  extension +"<br>" +params[i].marker + ' ' + params[i].seriesName + ' ' + value +"<br>";
       }
 
@@ -1004,15 +1008,14 @@ this.merge_consumedenergychartOption = {
   },
 
   xAxis: {
-    type: 'category',
+    type: 'time',
     boundaryGap: false,
-    data: this.JobDataService.getListOf("timestamp", jobData, currentjobid),
   },
 
   series: [
     {
       name: "consumedenergy",
-      data: this.JobDataService.getListOf("consumedenergy", jobData, currentjobid),
+      data: this.JobDataService.mergeLists(this.JobDataService.getListOf("timestamp", jobData, currentjobid), this.JobDataService.getListOf("consumedenergy", jobData, currentjobid)),
       type: "line",
       color: "rgb(255,69,0)",
       markPoint: {
