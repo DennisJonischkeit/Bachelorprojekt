@@ -10,6 +10,9 @@ export class JobDataService {
 
   jobs: any[]= [];
   current_selectedJobId = "";
+  selectedUser = "";
+  topic_change = false;
+  last_topic = "";
   
   
 // Service for JSON Objects which represent a job
@@ -31,6 +34,22 @@ constructor(private topic: MqttTopicService){}
 
 
 addjobData(job: JSON, item_topic: string): void {
+
+  // init with first object arrival
+  if(this.selectedUser == ""){
+    this.last_topic = item_topic;
+    this.selectedUser = this.getUserFromTopic(item_topic);
+  }
+  
+  if(!(this.last_topic == item_topic)){
+    this.topic_change = true;
+  }else{
+    this.topic_change = false;
+  }
+
+  if(this.topic_change){
+    this.selectedUser = this.getUserFromTopic(item_topic);
+  }
 
   
   let jobid = this.getValue("jobid", job);
@@ -59,6 +78,7 @@ addjobData(job: JSON, item_topic: string): void {
 
   }
 
+  this.last_topic = item_topic;
   this.jobDataSubject.next([...this.jobDataSubject.value, job]);
 
 }
@@ -148,9 +168,9 @@ addTimeStamp(obj: any): any {
 
 
 
-getDataListOfJobID(jobid: string) {
+getDataListOfJobID(jobid: string, user:string) {
   for(let i=0; i<this.jobs.length; i++){
-    if(this.jobs[i][0] == jobid){
+    if((this.jobs[i][0] == jobid) && (this.jobs[i][3] == user)){
       return this.jobs[i][1];
     }
   }

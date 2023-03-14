@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   selectedJobId: string;
   selectedtimestamp = "";
   timestamplist: any[] = [];
+  
 
   
 
@@ -530,13 +531,13 @@ consumedenergychartOption: EChartsOption = {
 
   onSelectedTimestampChange(selectedTimestamp: string){
 
-    this.update_selectedCardData(selectedTimestamp, this.selectedJobId);
+    this.update_selectedCardData(selectedTimestamp, this.selectedJobId, this.JobDataService.selectedUser);
 
   }
 
-  update_selectedCardData(timestamp: string, jobid: string){
-
-    let datalist = this.JobDataService.getDataListOfJobID(jobid);
+  update_selectedCardData(timestamp: string, jobid: string, user: string){
+    
+    let datalist = this.JobDataService.getDataListOfJobID(jobid, user);
     this.timestamplist = this.JobDataService.getListOf("timestamp",datalist,jobid);
 
     if(!(this.selectedtimestamp == "")){
@@ -566,15 +567,15 @@ consumedenergychartOption: EChartsOption = {
   };
 
 
-  update_dashboard(currentjobid: string){
+  update_dashboard(currentjobid: string, user: string){
 
 
     // update selectedCardData
-    this.update_selectedCardData(this.selectedtimestamp, currentjobid);
+    this.update_selectedCardData(this.selectedtimestamp, currentjobid, user);
 
-    let currentjobdata = this.JobDataService.getDataListOfJobID(currentjobid);
+    let currentjobdata = this.JobDataService.getDataListOfJobID(currentjobid, user);
     currentjobdata = currentjobdata[currentjobdata.length-1];
-    let jobData = this.JobDataService.getDataListOfJobID(currentjobid);
+    let jobData = this.JobDataService.getDataListOfJobID(currentjobid, user);
 
 
     let cardData = [];
@@ -1056,7 +1057,7 @@ this.merge_consumedenergychartOption = {
 
       if (!(currentjobid == "")){
 
-        this.update_dashboard(currentjobid);
+        this.update_dashboard(currentjobid, this.JobDataService.selectedUser);
 
       }
 
@@ -1091,7 +1092,7 @@ this.merge_consumedenergychartOption = {
 
         this.selectedJobId = currentjobid;
 
-        this.update_dashboard(currentjobid);
+        this.update_dashboard(currentjobid, this.JobDataService.selectedUser);
       
 
     }
@@ -1102,7 +1103,7 @@ this.merge_consumedenergychartOption = {
 
       if(!(typeof(currentjobdata) == "undefined")){
 
-        this.update_dashboard(currentjobid);
+        this.update_dashboard(currentjobid, this.JobDataService.selectedUser);
       }
 
 
