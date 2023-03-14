@@ -36,12 +36,17 @@ export class EventStreamComponent {
             this.subscription.unsubscribe();
         }
 
+        
+
         if(!(this.eventMqtt.endpoint_static == this.mqttTopicService.topic)){
             this.JobDataService.jobIdsSubject.next([]);
         }
 
         this.eventMqtt.endpoint_static = this.mqttTopicService.topic;
-        this.subscribeToTopic();
+
+        if(!(this.eventMqtt.endpoint_static == "")){
+            this.subscribeToTopic();
+        }
     }
 
     endstream(): void {
