@@ -3,6 +3,7 @@
     <nb-card-header>
       running user jobs
     </nb-card-header>
+
     <nb-list>
       <nb-list-item *ngFor="let jobid of sidebarData">
         <button nbButton (click)="selectedJobRoutine(jobid)"> {{jobid}} </button>

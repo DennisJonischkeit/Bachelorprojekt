@@ -11,10 +11,6 @@ export class JobDataService {
   jobs: any[]= [];
   current_selectedJobId = "";
   
-  last_topic = "";
-  topic_change = false;
-  item_count = 0;
- 
   
 // Service for JSON Objects which represent a job
 private jobDataSubject = new BehaviorSubject<JSON[]>([]);
@@ -36,125 +32,44 @@ constructor(private topic: MqttTopicService){}
 
 addjobData(job: JSON, item_topic: string): void {
 
-  // init last topic
-  if(this.item_count == 0){
-    this.last_topic = item_topic;
-  }
-
-  // detect topic change
-  if(!(this.last_topic == item_topic)){
-
-    console.log("topic changed detected");
-    this.topic_change = true;
-    
-  }else{
-    this.topic_change = false;
-  }
-
-
-
-
   
-
   let jobid = this.getValue("jobid", job);
-  
+  let user = this.getUserFromTopic(item_topic);
 
 
-  // case of topic_change false 
+  // case not in datastructure yet
+  if(!(this.inDatastructure(jobid, user))){
 
-  if(!(this.topic_change)){
+    this.jobs.push([jobid, [job], item_topic, user]);
+    this.jobIdsSubject.next([...this.jobIdsSubject.value, jobid]);
 
-    // case of job not in datastructre yet
-    if (!(this.jobIdsSubject.value.includes(this.getValue("jobid", job)))){
 
-      this.jobIdsSubject.next([...this.jobIdsSubject.value, this.getValue("jobid", job)]);
-      this.jobs.push([jobid,[job],item_topic]);
-
-    // case of job in datastructrue
-    }else{
-
-      for(let i=0; i<this.jobs.length; i++){
-        if(this.jobs[i][0] == jobid){
-          this.jobs[i][1].push(job);
-        }
-      }
-      
-    }
-
-  // case of topic_change true (
+  // case in datastructure
   }else{
 
-    // anpassung der job id liste für die sidebar
-
-    // gehe durch die datenstruktur und schaue ob es einträge gibt,
-    // die noch zum neuen topic dazugehören ansonsten resette die id liste
-
-    if(!(this.isSubsetOrSuperset(this.last_topic, item_topic))){
-
-      this.jobIdsSubject.next([jobid]);
-      this.jobs.push([jobid, [job], item_topic]);
-
-    
-    }else{
-
-
-      // !!! bugs fixen set erkennung und prozedur laufen noch nicht korrekt
-      let newlist = [];
-      for(let i=0; i<this.jobs.length; i++){
-
-        if(this.isSubsetOrSuperset(this.jobs[i][2],item_topic)){
-
-          
-
-          if(this.isSuperset(this.jobs[i][2],item_topic)){
-
-            console.log("superset");
-
-            newlist.push(jobid);
-            this.jobs[i][1].push(job);
-            
-
-          }
-
-
-
-          if(this.isSubset(this.jobs[i][2],item_topic)){
-
-            console.log("subset");
-
-            newlist.push(jobid);
-            this.jobs[i][1].push(job);
-            break;
-
-          }
-        }
-      }
-
-      
-
-
-
-
+    if(!(this.jobIdsSubject.value.includes(jobid))){
+      this.jobIdsSubject.next([...this.jobIdsSubject.value, jobid]);
     }
 
-
-
-
-
-
-
-
+    for(let i=0; i<this.jobs.length; i++){
+      if((this.jobs[i][0] == jobid) && (this.jobs[i][3] == user)){
+        this.jobs[i][1].push(job);
+      }
+    }
 
   }
 
-
-
-  
   this.jobDataSubject.next([...this.jobDataSubject.value, job]);
-  this.item_count += 1 ;
-  this.last_topic = item_topic;
 
 }
+
+
+
+
+
+
+
+
 
 getValue(key: string, job: JSON){
   const result = (job as {[key: string]: any});
@@ -253,7 +168,7 @@ getDataListOfJobID(jobid: string) {
 }
 
 
-isSubsetOrSuperset(last:string, current:string){
+isOnlySubsetOrSuperset(last:string, current:string){
 
   // example topic strings: 
   //  last:    cesari/home/djonisch/92924
@@ -275,11 +190,11 @@ isSubsetOrSuperset(last:string, current:string){
     }
   }
 
-return true;
+return false;
 
 }
 
-isSubset(last:string, current:string){
+isOnlySubset(last:string, current:string){
   let last_topic: string[] = last.split("/");
   let current_topic: string[] = current.split("/");
 
@@ -295,11 +210,11 @@ isSubset(last:string, current:string){
       return false;
     }
   }
-  return true;
+  return false;
 
 }
 
-isSuperset(last:string, current:string){
+isOnlySuperset(last:string, current:string){
 
   let last_topic: string[] = last.split("/");
   let current_topic: string[] = current.split("/");
@@ -316,11 +231,32 @@ isSuperset(last:string, current:string){
       return false;
     }
   }
-  return true;
+  return false;
 
 }
 
 
+
+inDatastructure(jobid: string, user:string){
+
+  for(let i=0; i<this.jobs.length; i++){
+
+    if((this.jobs[i][0] == jobid) && (this.jobs[i][3] == user)){
+      return true;
+
+    }
+  }
+  return false;
+}
+
+
+getUserFromTopic(topic: string){
+
+  let newTopic = topic.split("/");
+  return newTopic[newTopic.length - 2];
+
+
+}
 
 
 

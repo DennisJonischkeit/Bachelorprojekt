@@ -9,6 +9,7 @@ import { JobDataService } from '../services/shared-jobdata.service';
 export class SidebarComponent implements OnInit {
   sidebarData: string[] = [];
   selectedJob = "";
+  
 
   selectedJobRoutine(jobid: string){
     this.selectedJob = jobid;
@@ -23,6 +24,7 @@ export class SidebarComponent implements OnInit {
 
     this.JobDataService.jobIdData.subscribe((jobIddata: string[]) =>{
 
+      
 
       let sidebarData = [];
 
