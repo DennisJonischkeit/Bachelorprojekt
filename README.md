@@ -8,7 +8,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 Try `npm install --force` if `ng serve` does not work yet.
 
-Try 'npm install --force' if 'ng serve' does not work.
+Try `npm install --force` if `ng serve` does not work.
 
 # Code scaffolding
 
@@ -33,6 +33,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 # Docerize
 
-first run `npm run build --prod`. Build container with `docker build -t dennis/ba .`. you can execute the container via docker gui or with cmd `docker run -it -p 80:4200 dennis/ba`
+first run `npm run build --prod`. Build container with `docker build -t dennis/ba .`. You can execute the container via docker gui or with cmd `docker run -it -p 80:4200 dennis/ba`
 
 
