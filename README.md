@@ -8,8 +8,6 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 Try `npm install --force` if `ng serve` does not work yet.
 
-Try `npm install --force` if `ng serve` does not work.
-
 # Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
