@@ -20,6 +20,7 @@ export class EventStreamComponent {
     private deviceId: string;
     subscription: Subscription;
     private selectedtopic: string;
+    
 
 
     constructor(
@@ -53,6 +54,7 @@ export class EventStreamComponent {
         if (this.subscription) {
             this.subscription.unsubscribe();
         }
+        console.log(this.JobDataService.jobs);
     }
 
 
@@ -61,21 +63,16 @@ export class EventStreamComponent {
         
         this.subscription = this.eventMqtt.topic()
             .subscribe((data: IMqttMessage) => {
+
+                
                 let item = JSON.parse(new TextDecoder("utf-8").decode(data.payload)); //json object with job information
                 
-                // timestemp in Object reinlegen
-                const newitem = this.JobDataService.addTimeStamp(item);
+                
 
                 let item_topic = this.eventMqtt.endpoint_static;
                 
-                this.JobDataService.addjobData(newitem, item_topic);
-                //console.log("Es kommen daten an...", newitem);
-                
-                
-                
-                
-              
-                // item hier an Datenbank schicken / text Datei 
+                this.JobDataService.addjobData(item, item_topic);
+               
                 
             });
     

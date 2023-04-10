@@ -13,6 +13,13 @@ export class JobDataService {
   selectedUser = "";
   topic_change = false;
   last_topic = "";
+  last_timestamps :any[] = [];
+  process: boolean = false;
+
+  lastid:string = "";
+  lasttime:string = "";
+  timestampBuffer = new Map();
+ 
   
   
 // Service for JSON Objects which represent a job
@@ -34,6 +41,7 @@ constructor(private topic: MqttTopicService){}
 
 
 addjobData(job: JSON, item_topic: string): void {
+
 
   // init with first object arrival
   if(this.selectedUser == ""){
@@ -80,6 +88,8 @@ addjobData(job: JSON, item_topic: string): void {
 
   this.last_topic = item_topic;
   this.jobDataSubject.next([...this.jobDataSubject.value, job]);
+  
+  
 
 }
 
@@ -159,12 +169,40 @@ timeToSeconds(time: string): number {
 }
 
 
+
 addTimeStamp(obj: any): any {
+
   const now = new Date();
-  const timestamp = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}T${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}.000Z`;
-  return {...obj, timestamp};
+  const timestampKey = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}T${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+  let timestamp = timestampKey + ".000Z";
+  
+  const jobid = obj["jobid"];
+  const lastTimestamp = this.timestampBuffer.get(jobid);
+
+  if (lastTimestamp && lastTimestamp == timestamp) {
+    console.log("race condition for jobid:", jobid);
+
+    const prevTimestamp = new Date(lastTimestamp);
+    prevTimestamp.setSeconds(prevTimestamp.getSeconds() + 1);
+    timestamp = prevTimestamp.toISOString();
+ 
+  }
+
+  this.timestampBuffer.set(jobid, timestamp);
+
+  obj.timestamp = timestamp; // Add timestamp to the JSON object
+
+  console.log(this.timestampBuffer);
+
+  return obj;
+
 }
 
+addTimeStampWithMS(obj: any): any {
+  const now = new Date();
+  const timestamp = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}T${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}.${now.getMilliseconds().toString().padStart(3, '0')}Z`;
+  return {...obj, timestamp};
+}
 
 
 
@@ -284,4 +322,6 @@ mergeLists(timelist: string[], datalist: string[]){
 
 
 }
+
+
 

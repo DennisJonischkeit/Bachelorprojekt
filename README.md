@@ -5,6 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Try `npm install --force` if `ng serve` does not work yet.
 
 ## Code scaffolding
 
@@ -25,3 +26,9 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
+# Docerize
+
+first run `npm run build --prod`. Build container with `docker build -t dennis/ba .`. you can execute the container via docker gui or with cmd `docker run -it -p 80:4200 dennis/ba`
+
